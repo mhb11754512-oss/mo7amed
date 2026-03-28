@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>كلية القانون - نظام الاختبارات</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========== CSS FOR MAIN PLATFORM ========== */
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498DB;
+            --accent: #7F8C8D;
+            --success: #27AE60;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --dark: #1A252F;
+            --light: #ECF0F1;
+            --glass: rgba(255, 255, 255, 0.05);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --card-bg: linear-gradient(145deg, rgba(44, 62, 80, 0.95), rgba(26, 37, 47, 0.95));
+            --glow: 0 0 15px rgba(52, 152, 219, 0.2);
+            --incorrect: #FFA500; /* اللون البرتقالي الذهبي للإجابات الخطأ */
+            
+            /* Premium Theme */
+            --premium-gold: #D4AF37;
+            --premium-bg: linear-gradient(145deg, #1a0a2e, #2d0a4e);
+            --premium-accent: #9b59b6;
+        }
+
+        .premium-user .card {
+            background: var(--premium-bg) !important;
+            border: 1px solid var(--premium-gold) !important;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3) !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #2C3E50;
+                --secondary: #3498DB;
+                --accent: #95A5A6;
+                --dark: #1A252F;
+                --light: #ECF0F1;
+                --card-bg: linear-gradient(145deg, rgba(44, 62, 80, 0.95), rgba(30, 40, 52, 0.95));
+                --incorrect: #FFA500;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .arabic-text {
+            font-family: 'Cairo', 'Arial', sans-serif !important;
+            text-align: right !important;
+            direction: rtl !important;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 50%, var(--accent) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* تغيير التوسيط ليبدأ من الأعلى لضمان ظهور المحتوى عند التكبير */
+            overflow-x: hidden;
+        }
+
+        /* Force normal mode when not on login */
+        #mainPlatform:not(.on-login-screen) {
+            background: transparent !important;
+            padding: 20px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        /* Login Screen Background */
+        .screen#loginScreen {
+            background:  center center/cover no-repeat !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100% !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            z-index: 1000 !important;
+        }
+
+        .screen#loginScreen .card {
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            padding: 0 !important;
+            max-width: 350px !important;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow), var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(52, 152, 219, 0.2);
+            position: relative;
+            /* تمت إزالة overflow: hidden لمنع قص المحتوى عند التكبير */
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass);
+        }
+
+        /* Hide container and card on login screen */
+        #mainPlatform.on-login-screen .container {
+            display: contents !important;
+        }
+
+        #mainPlatform.on-login-screen .card {
+            display: flex !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            min-height: 100vh !important;
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background:  center center/cover no-repeat fixed !important;
+            border-radius: 0 !important;
+            flex-direction: column;
+            justify-content: center; /* التوسيط في المنتصف عمودياً */
+            align-items: center;
+            z-index: 1999;
+            backdrop-filter: none !important;
+            overflow-y: auto !important;
+            padding: 40px 0 !important; /* مساحة أمان للتمرير عند التكبير */
+        }
+
+        #mainPlatform.on-login-screen .card > *:not(#loginScreen) {
+            display: none !important;
+        }
+
+        /* But show loginScreen inside card */
+        #mainPlatform.on-login-screen #loginScreen {
+            display: flex !important;
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            width: auto !important;
+            height: auto !important;
+            z-index: auto;
+            background: transparent !important;
+            flex-direction: column;
+            justify-content: center; /* التوسيط داخل الحاوية نفسها */
+            align-items: center;
+        }
+
+        /* Reset card styling when NOT on login screen */
+        #mainPlatform:not(.on-login-screen) .card {
+            position: relative !important;
+            width: 100% !important;
+            max-width: 800px !important;
+            height: auto !important;
+            margin: 0 auto;
+            padding: 25px !important;
+            background: var(--card-bg) !important;
+            border-radius: 20px !important;
+            box-shadow: var(--shadow), var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(52, 152, 219, 0.2) !important;
+            border: 1px solid var(--glass) !important;
+            backdrop-filter: blur(10px) !important;
+            display: block !important;
+        }
+
+        /* Show container when NOT on login */
+        #mainPlatform:not(.on-login-screen) .container {
+            display: block !important;
+            position: relative !important;
+        }
+
+        /* Show all screens except loginScreen when NOT on login */
+        #mainPlatform:not(.on-login-screen) .card > *:not(.screen#loginScreen) {
+            /* تمت إزالة display: block !important لأنها تسبب تداخل الشاشات */
+        }
+
+        /* تأكيد إخفاء الشاشات غير النشطة */
+        .screen:not(.active) {
+            display: none !important;
+        }
+
+        .designer-credit {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--secondary);
+            background: rgba(44, 62, 80, 0.8);
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--secondary);
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Hide designer credit on login */
+        #mainPlatform.on-login-screen .designer-credit {
+            display: none !important;
+        }
+
+        .screen {
+            display: none !important;
+        }
+
+        .screen:not(.active) {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .screen.active {
+            display: block !important;
+            visibility: visible !important;
+            height: auto !important;
+            pointer-events: auto !important;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Extra safety: hide all screens by default in card except active */
+        .card .screen {
+            display: none !important;
+        }
+
+        .card .screen.active {
+            display: block !important;
+        }
+
+        /* Login Screen - Simplified & Transparent */
+        .screen#loginScreen.active {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            background:  center center/cover no-repeat fixed;
+            background-color: rgba(44, 62, 80, 0.3);
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            z-index: 2000 !important;
+            overflow: hidden !important;
+            box-shadow: none !important;
+            border: none !important;
+            backdrop-filter: none !important;
+        }
+
+        .screen#loginScreen.active * {
+            max-width: 100%;
+        }
+
+        .screen#loginScreen.active .login-header {
+            display: none !important;
+        }
+
+        .screen#loginScreen.active .login-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.5));
+        }
+
+        .screen#loginScreen.active h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .screen#loginScreen.active .subject-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .screen#loginScreen.active .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .screen#loginScreen.active #username {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            border-radius: 12px;
+            background: rgba(44, 62, 80, 0.15);
+            color: var(--light);
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            font-family: 'Cairo', 'Poppins', Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            box-sizing: border-box;
+        }
+
+        .screen#loginScreen.active #username:focus {
+            border-color: var(--secondary);
+            background: rgba(44, 62, 80, 0.25);
+            outline: none;
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.5);
+        }
+
+        .screen#loginScreen.active #username::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .screen#loginScreen.active #loginBtn {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+            background: rgba(52, 152, 219, 0.25);
+            color: var(--light);
+            border: 2px solid rgba(52, 152, 219, 0.4);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            font-family: 'Cairo', 'Poppins', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        .screen#loginScreen.active #loginBtn:hover {
+            background: rgba(52, 152, 219, 0.4);
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 0 35px rgba(52, 152, 219, 0.6);
+        }
+
+        .screen#loginScreen.active #loginBtn:active {
+            transform: translateY(1px);
+        }
+
+        .screen#loginScreen.active #loginError {
+            color: #FF6B6B;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            background: rgba(255, 107, 107, 0.15);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        .screen#loginScreen.active label {
+            display: none !important;
+        }
+
+        /* Quiz Screen - Full Screen */
+        .screen#quizScreen.active {
+            position: relative !important; /* إلغاء الوضع الثابت */
+            width: 100% !important;
+            min-height: 100vh !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            border-radius: 0 !important;
+            z-index: 1500 !important;
+        }
+
+        .screen#quizScreen.active ~ .container {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            filter: drop-shadow(0 0 10px rgba(52, 152, 219, 0.3));
+        }
+
+        h1, h2, h3 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .subject-title {
+            color: var(--secondary);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(44, 62, 80, 0.7);
+            color: var(--light);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--light);
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(127, 140, 141, 0.4);
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .subject-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .subject-btn {
+            background: rgba(44, 62, 80, 0.7);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--light);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+            position: relative;
+        }
+
+        .subject-btn:hover {
+            transform: translateY(-3px);
+            border-color: var(--secondary);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .subject-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .subject-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .testbank-btn {
+            border: 2px solid #27AE60 !important;
+            background: rgba(39, 174, 96, 0.1) !important;
+            animation: testbank-glow 2s infinite alternate;
+        }
+
+        .testbank-btn:hover {
+            background: rgba(39, 174, 96, 0.2) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3) !important;
+        }
+
+        .testbank-btn.active {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(33, 150, 83, 0.3)) !important;
+            border-color: #27AE60 !important;
+        }
+
+        @keyframes testbank-glow {
+            0% { box-shadow: 0 0 5px rgba(39, 174, 96, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(39, 174, 96, 0.6), 0 0 30px rgba(39, 174, 96, 0.3); }
+        }
+
+        .testbank-humanitarian-btn {
+            border: 2px solid #F39C12 !important;
+            background: rgba(243, 156, 18, 0.1) !important;
+            animation: testbank-humanitarian-glow 2s infinite alternate;
+        }
+
+        .testbank-humanitarian-btn:hover {
+            background: rgba(243, 156, 18, 0.2) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3) !important;
+        }
+
+        .testbank-humanitarian-btn.active {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(211, 136, 16, 0.3)) !important;
+            border-color: #F39C12 !important;
+        }
+
+        @keyframes testbank-humanitarian-glow {
+            0% { box-shadow: 0 0 5px rgba(243, 156, 18, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(243, 156, 18, 0.6), 0 0 30px rgba(243, 156, 18, 0.3); }
+        }
+
+        .testbank-family-btn {
+            border: 2px solid #34495E !important;
+            background: rgba(52, 73, 94, 0.1) !important;
+            animation: testbank-family-glow 3s infinite alternate;
+        }
+
+        .testbank-family-btn:hover {
+            background: linear-gradient(135deg, rgba(52, 73, 94, 0.15), rgba(44, 62, 80, 0.25)) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 73, 94, 0.4) !important;
+            border-color: #3498DB !important;
+        }
+
+        .testbank-family-btn.active {
+            background: linear-gradient(135deg, rgba(52, 73, 94, 0.2), rgba(44, 62, 80, 0.3)) !important;
+            border-color: #3498DB !important;
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.4) !important;
+        }
+
+        @keyframes testbank-family-glow {
+            0% { box-shadow: 0 0 5px rgba(52, 73, 94, 0.3); }
+            100% { box-shadow: 0 0 15px rgba(52, 73, 94, 0.5), 0 0 25px rgba(52, 152, 219, 0.3); }
+        }
+
+        .timer-container {
+            background: rgba(44, 62, 80, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 5px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        .question-container {
+            margin-bottom: 25px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--light);
+            background: rgba(44, 62, 80, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background: rgba(44, 62, 80, 0.7);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--light);
+            display: flex; /* للحفاظ على خصائص flexbox */
+            align-items: flex-start; /* لمحاذاة النص لأعلى الخيار، أفضل للنصوص متعددة الأسطر */
+            /* تمت إزالة min-height للسماح للخيارات بالتوسع عمودياً مع المحتوى */
+        }
+
+        .option:hover {
+            background: rgba(52, 73, 94, 0.7);
+            transform: translateX(5px);
+            border-color: var(--secondary);
+        }
+
+        .option.selected {
+            background: rgba(52, 152, 219, 0.15);
+            border-color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .navigation .btn {
+            width: 48%;
+            margin-top: 0;
+        }
+
+        .results-summary {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 15px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .review-container {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .review-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(44, 62, 80, 0.5);
+        }
+
+        .review-item.incorrect {
+            border-left: 4px solid var(--incorrect); /* استخدام اللون البرتقالي الذهبي للإجابات الخطأ */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(44, 62, 80, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--secondary);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--light);
+            opacity: 0.9;
+        }
+
+        .stats-history {
+            background: rgba(44, 62, 80, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .error-message {
+            color: var(--accent);
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+            text-shadow: 0 0 10px rgba(127, 140, 141, 0.5);
+        }
+
+        .time-up-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(44, 62, 80, 0.95);
+            color: var(--accent);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1000;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(127, 140, 141, 0.5);
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-1000px) rotate(720deg); }
+        }
+
+        .back-btn {
+            background: rgba(44, 62, 80, 0.7);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(52, 152, 219, 0.15);
+            transform: translateX(-5px);
+        }
+
+        .btn-testbank-civil {
+            background: linear-gradient(135deg, #27AE60, #219653) !important;
+        }
+
+        .btn-testbank-civil:hover {
+            background: linear-gradient(135deg, #219653, #27AE60) !important;
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4) !important;
+        }
+
+        .btn-testbank-humanitarian {
+            background: linear-gradient(135deg, #F39C12, #D38810) !important;
+        }
+
+        .btn-testbank-humanitarian:hover {
+            background: linear-gradient(135deg, #D38810, #F39C12) !important;
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4) !important;
+        }
+
+        .btn-testbank-family {
+            background: linear-gradient(135deg, #34495E, #2C3E50) !important;
+        }
+
+        .btn-testbank-family:hover {
+            background: linear-gradient(135deg, #2C3E50, #34495E) !important;
+            box-shadow: 0 8px 25px rgba(52, 73, 94, 0.4) !important;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #27AE60, #219653);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideIn 0.5s ease;
+            max-width: 400px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* تحسينات للأجهزة الصغيرة جداً (جوالات صغيرة) */
+        @media (max-width: 320px) {
+            /* تحسينات شاشة البداية */
+            .designer-name span { 
+                font-size: 1.8rem !important; 
+                line-height: 1.2;
+            }
+            .laser-container { 
+                height: 100px !important; 
+                margin-bottom: 30px !important; 
+            }
+            .countdown { 
+                font-size: 1.5rem !important; 
+                margin: 15px 0 !important;
+            }
+            .system-log { 
+                width: 150px !important; 
+                height: 80px !important; 
+                font-size: 0.6rem !important; 
+                bottom: 10px !important; 
+                left: 10px !important; 
+            }
+            .progress-container { 
+                width: 90% !important; 
+                margin-top: 30px !important; 
+            }
+            .info-panel { 
+                top: 10px !important; 
+                right: 10px !important; 
+                padding: 8px !important; 
+                font-size: 0.7rem !important; 
+            }
+            
+            /* تحسينات المنصة الرئيسية */
+            body { 
+                padding: 5px !important; 
+            }
+            .container { 
+                padding: 5px !important; 
+                max-width: 100% !important;
+            }
+            .card { 
+                padding: 15px !important; 
+                border-radius: 15px !important; 
+            }
+            h1, h2, h3 { 
+                font-size: 20px !important; 
+                line-height: 1.3 !important;
+            }
+            .subject-selector { 
+                grid-template-columns: 1fr !important; 
+                gap: 8px !important; 
+                margin: 15px 0 !important;
+            }
+            .subject-btn { 
+                padding: 12px !important; 
+                min-height: 80px !important; 
+                font-size: 14px !important;
+            }
+            .subject-icon { 
+                font-size: 20px !important; 
+                margin-bottom: 5px !important; 
+            }
+            .question-text { 
+                font-size: 14px !important; 
+                padding: 12px !important; 
+                line-height: 1.5 !important;
+            }
+            .btn { 
+                padding: 12px !important; 
+                font-size: 14px !important; 
+                min-height: 50px !important;
+            }
+            .score-display { 
+                font-size: 32px !important; 
+            }
+            .stats-grid { 
+                grid-template-columns: 1fr !important; 
+                gap: 10px !important; 
+            }
+            .timer-container { 
+                padding: 8px 12px !important; 
+                font-size: 14px !important; 
+            }
+            .option {
+                padding: 12px !important;
+                min-height: 50px !important;
+                font-size: 14px !important;
+            }
+            .navigation {
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            .navigation .btn {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+        }
+
+        /* تحسينات للجوالات المتوسطة */
+        @media (min-width: 321px) and (max-width: 480px) {
+            /* تحسينات شاشة البداية */
+            .designer-name span { 
+                font-size: 2.2rem !important; 
+            }
+            .laser-container { 
+                height: 120px !important; 
+                margin-bottom: 40px !important; 
+            }
+            .countdown { 
+                font-size: 1.8rem !important; 
+            }
+            .system-log { 
+                width: 180px !important; 
+                height: 100px !important; 
+                font-size: 0.7rem !important; 
+                bottom: 15px !important; 
+                left: 15px !important; 
+            }
+            .progress-container { 
+                width: 85% !important; 
+                margin-top: 40px !important; 
+            }
+            
+            /* تحسينات المنصة الرئيسية */
+            body { 
+                padding: 10px !important; 
+            }
+            .container { 
+                padding: 10px !important; 
+                max-width: 100% !important;
+            }
+            .card { 
+                padding: 20px !important; 
+            }
+            h1, h2, h3 { 
+                font-size: 24px !important; 
+            }
+            .subject-selector { 
+                grid-template-columns: 1fr !important; 
+                gap: 10px !important; 
+                margin: 20px 0 !important;
+            }
+            .subject-btn { 
+                padding: 15px !important; 
+                min-height: 100px !important; 
+                font-size: 15px !important;
+            }
+            .question-text { 
+                font-size: 16px !important; 
+                padding: 15px !important; 
+            }
+            .btn { 
+                padding: 14px !important; 
+                font-size: 15px !important; 
+                min-height: 55px !important;
+            }
+            .score-display { 
+                font-size: 36px !important; 
+            }
+            .stats-grid { 
+                grid-template-columns: 1fr !important; 
+            }
+            .option {
+                padding: 14px !important;
+                min-height: 55px !important;
+                font-size: 15px !important;
+            }
+        }
+
+        /* تحسينات للتابلت */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container { 
+                padding: 10px !important; 
+                max-width: 95% !important;
+            }
+            .card { 
+                padding: 20px !important; 
+            }
+            h1, h2, h3 { 
+                font-size: 26px !important; 
+            }
+            .subject-selector { 
+                grid-template-columns: repeat(2, 1fr) !important; 
+                gap: 12px !important; 
+            }
+            .navigation { 
+                flex-direction: column !important; 
+                gap: 10px !important; 
+            }
+            .navigation .btn { 
+                width: 100% !important; 
+            }
+            .question-text {
+                font-size: 17px !important;
+                padding: 18px !important;
+            }
+            .option {
+                padding: 15px !important;
+                min-height: 60px !important;
+            }
+        }
+
+        /* تحسينات للاب توب */
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .container { 
+                max-width: 90% !important; 
+            }
+            .subject-selector {
+                gap: 20px !important;
+            }
+        }
+
+        /* تحسينات للشاشات الكبيرة */
+        @media (min-width: 1201px) {
+            .container { 
+                max-width: 70% !important; 
+            }
+            .card {
+                padding: 30px !important;
+            }
+        }
+
+        /* تحسينات للشاشات التي تعمل باللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .option:hover, .subject-btn:hover, .btn:hover { 
+                transform: none !important; 
+            }
+            .option { 
+                min-height: 70px !important; 
+                padding: 20px !important; 
+            }
+            .btn { 
+                min-height: 55px !important; 
+            }
+            .subject-btn { 
+                min-height: 130px !important; 
+            }
+            .navigation {
+                gap: 10px !important;
+            }
+        }
+
+        /* تحسينات إضافية للاستجابة */
+        @media (max-height: 700px) {
+            .subject-btn {
+                min-height: 100px !important;
+                padding: 12px !important;
+            }
+            .question-text {
+                padding: 15px !important;
+                margin-bottom: 15px !important;
+            }
+            .option {
+                padding: 12px !important;
+                min-height: 50px !important;
+            }
+            .results-summary {
+                padding: 15px !important;
+            }
+        }
+
+        @media (max-width: 768px) and (max-height: 700px) {
+            .testbank-btn, .testbank-humanitarian-btn, .testbank-family-btn { 
+                animation: none !important; 
+            }
+            .floating-elements { 
+                display: none !important; 
+            }
+            .progress-bar::before { 
+                animation: none !important; 
+            }
+        }
+
+        @media (max-device-width: 768px) and (max-device-height: 1024px) {
+            .floating-elements { 
+                opacity: 0.3 !important; 
+            }
+            .floating-element { 
+                animation-duration: 25s !important; 
+            }
+            .designer-name span::after { 
+                text-shadow: 0 0 5px #ff0000 !important; 
+            }
+        }
+
+        /* تحسينات للغة العربية */
+        .rtl-text {
+            font-family: 'Cairo', sans-serif !important;
+            text-align: right !important;
+            direction: rtl !important;
+            line-height: 1.8 !important;
+        }
+
+        /* تحسينات لشاشة الإحصائيات */
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            .stat-card {
+                padding: 15px !important;
+            }
+            .stat-value {
+                font-size: 24px !important;
+            }
+            .stats-history {
+                padding: 15px !important;
+                max-height: 250px !important;
+            }
+            .history-item {
+                padding: 10px !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 5px !important;
+            }
+        }
+
+        /* تحسينات لشاشة النتائج */
+        @media (max-width: 768px) {
+            .review-container {
+                max-height: 250px !important;
+            }
+            .review-item {
+                padding: 12px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== MAIN PLATFORM ========== -->
+    <div id="mainPlatform" style="display: block;" class="on-login-screen"> <!-- تم جعل المنصة تظهر مباشرة -->
+        <div class="container">
+            <div class="card">
+                <div class="designer-credit">Mohamed Nasser Mohammed</div>
+
+                <div class="timer-container" id="timerContainer" style="display: none;">
+                    <i class="fas fa-clock"></i> Time Remaining: <span id="timerDisplay">00:00</span>
+                </div>
+
+                <!-- LOGIN SCREEN -->
+                <div id="loginScreen" class="screen active">
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Your Name</label>
+                        <input type="text" id="username" placeholder="Enter your full name">
+                    </div>
+
+                    <button id="loginBtn" class="btn">
+                        <i class="fas fa-play-circle"></i> Start Learning Journey
+                    </button>
+
+                    <div id="loginError" class="error-message">
+                        <i class="fas fa-exclamation-circle"></i> Name must be at least 4 characters long!
+                    </div>
+                </div>
+
+                <!-- SUBJECT SELECTION SCREEN -->
+                <div id="subjectScreen" class="screen">
+                    <div class="login-header">
+                        <div class="login-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h2>Welcome, <span id="userNameSubject"></span>!</h2>
+                        <div class="subject-title">Select the subject you want to test yourself in</div>
+                    </div>
+
+                    <div class="subject-selector" id="subjectSelector">
+                        <div class="subject-btn active" data-subject="obligations">
+                            <div class="subject-icon"><i class="fas fa-balance-scale"></i></div>
+                            <div class="arabic-text">أحكام الالتزام</div>
+                        </div>
+                        <div class="subject-btn" data-subject="evidence">
+                            <div class="subject-icon"><i class="fas fa-gavel"></i></div>
+                            <div class="arabic-text">قانون الإثبات</div>
+                        </div>
+                        <div class="subject-btn" data-subject="eu_law">
+                            <div class="subject-icon"><i class="fas fa-euro-sign"></i></div>
+                            <div class="arabic-text">قانون الاتحاد الأوروبي</div>
+                        </div>
+                        <div class="subject-btn" data-subject="banking">
+                            <div class="subject-icon"><i class="fas fa-university"></i></div>
+                            <div class="arabic-text">البنوك والنقود</div>
+                        </div>
+                        <div class="subject-btn" data-subject="political_science">
+                            <div class="subject-icon">
+                                <i class="fas fa-poll"></i>
+                            </div>
+                            <div class="arabic-text">مدخل للعلوم السياسية</div>
+                        </div>
+                        <div class="subject-btn" data-subject="research">
+                            <div class="subject-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="arabic-text">مهارات البحث والتحليل</div>
+                        </div>
+                        <div class="subject-btn" data-subject="admin_law">
+                            <div class="subject-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div class="arabic-text">القانون الإداري</div>
+                        </div>
+                    </div>
+
+                    <button id="selectSubjectBtn" class="btn">
+                        <i class="fas fa-arrow-right"></i> Proceed to Exam Selection
+                    </button>
+
+                    <button id="viewStatsBtn" class="btn" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <i class="fas fa-chart-bar"></i> View Statistics
+                    </button>
+
+                    <button id="aiAssistantBtn" class="btn" style="display: none; background: linear-gradient(135deg, #D4AF37, #9b59b6); color: #fff; border: 1px solid #D4AF37;">
+                        <i class="fas fa-robot"></i> AI Study Assistant (Premium)
+                    </button>
+
+                    <button id="backToLoginBtn" class="btn" style="background: linear-gradient(135deg, #555, #777);">
+                        <i class="fas fa-sign-out-alt"></i> Back to Login
+                    </button>
+                </div>
+
+                <!-- EXAM SELECTION SCREEN -->
+                <div id="welcomeScreen" class="screen">
+                    <button id="backToSubjectBtn" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Subject Selection
+                    </button>
+
+                    <div class="login-header">
+                        <h2><span id="userNameWelcome"></span></h2>
+                        <div class="subject-title" id="selectedSubjectText">Select the exam you want to start</div>
+                    </div>
+
+                    <div class="subject-selector" id="welcomeQuizSelector">
+                        <!-- Will be populated dynamically -->
+                    </div>
+
+                    <button id="startQuizBtn" class="btn">
+                        <i class="fas fa-play"></i> Start Selected Exam
+                    </button>
+                </div>
+
+                <!-- EXAM SCREEN -->
+                <div id="quizScreen" class="screen">
+                    <div class="subject-title" id="welcomeMessage">
+                        <i class="fas fa-user-graduate"></i> You are answering as: <span id="userName"></span>
+                    </div>
+
+                    <div id="quizContent">
+                        <div class="quiz-info">
+                            <span id="quizTitle">Exam Title</span>
+                            <span id="questionNumber">Question 1 of 10</span>
+                        </div>
+
+                        <div class="progress-bar" style="display: block;">
+                            <div class="progress" id="progressBar"></div>
+                        </div>
+
+                        <div class="question-container">
+                            <div class="question-text" id="questionText"></div>
+                            <div class="options-container" id="optionsContainer"></div>
+                        </div>
+
+                        <div class="navigation" style="display: flex;">
+                            <button id="prevBtn" class="btn">
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button id="nextBtn" class="btn">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results section -->
+                    <div class="results-summary" id="resultsSummary" style="display: none;">
+                        <div class="login-header">
+                            <div class="login-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Exam Results Summary</h3>
+                            <div class="score-display" id="scoreDisplay"></div>
+                            <div class="subject-title" id="scoreText"></div>
+                        </div>
+
+                        <div class="subject-title">
+                            <div id="correctAnswers"></div>
+                            <div id="incorrectAnswers"></div>
+                        </div>
+
+                        <div class="review-container" id="reviewContainer"></div>
+
+                        <button id="backToQuizzesBtn" class="btn">
+                            <i class="fas fa-redo"></i> Back to Exam Selection
+                        </button>
+
+                        <button id="viewStatsFromResultsBtn" class="btn" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                            <i class="fas fa-chart-bar"></i> View Statistics
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STATISTICS SCREEN -->
+                <div id="statsScreen" class="screen">
+                    <button id="backToLoginFromStatsBtn" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Login
+                    </button>
+
+                    <div class="login-header">
+                        <div class="login-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h2>Statistics</h2>
+                        <div class="subject-title">Your performance overview</div>
+                    </div>
+
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Will be populated dynamically -->
+                    </div>
+
+                    <div class="stats-history">
+                        <h3 style="margin-bottom: 15px; color: var(--secondary);">Recent Exams</h3>
+                        <div id="historyList">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <button id="clearStatsBtn" class="btn" style="background: linear-gradient(135deg, var(--accent), #7F8C8D);">
+                        <i class="fas fa-trash"></i> Clear All Statistics
+                    </button>
+                </div>
+
+                <!-- ADMIN SCREEN -->
+                <div id="adminScreen" class="screen">
+                    <button onclick="showScreen('loginScreen')" class="back-btn"><i class="fas fa-arrow-left"></i> Logout Admin</button>
+                    <div class="login-header">
+                        <div class="login-icon"><i class="fas fa-user-shield"></i></div>
+                        <h2>Admin Control Panel</h2>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="text" id="newPremiumUser" placeholder="Enter username to make Premium" style="flex: 1;">
+                        <button onclick="addPremiumUser()" class="btn" style="width: auto; margin-top: 0; background: var(--success);">Add Premium</button>
+                    </div>
+
+                    <div class="stats-history">
+                        <h3 style="color: var(--secondary);">Platform Accounts</h3>
+                        <div id="allAccountsList"></div>
+                    </div>
+
+                    <div class="stats-history">
+                        <h3 style="color: var(--secondary);">Premium Users</h3>
+                        <div id="premiumUsersList"></div>
+                    </div>
+
+                    <div class="stats-history">
+                        <h3 style="color: var(--secondary);">Edit Questions</h3>
+                        <select id="editSubjectSelect" onchange="loadQuestionsForEdit()" class="btn" style="background: var(--primary); margin-bottom: 10px;"></select>
+                        <div id="questionsEditList"></div>
+                    </div>
+                </div>
+
+                <!-- AI ASSISTANT SCREEN -->
+                <div id="aiScreen" class="screen">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button onclick="showScreen('subjectScreen')" class="back-btn" style="margin-bottom: 0;"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button onclick="createNewChat()" class="btn" style="width: auto; margin-top: 0; background: var(--premium-gold); padding: 8px 15px; font-size: 14px;">
+                            <i class="fas fa-plus"></i> New Chat
+                        </button>
+                    </div>
+
+                    <div class="login-header">
+                        <div class="login-icon" style="color: var(--premium-gold);"><i class="fas fa-magic"></i></div>
+                        <h2 style="background: linear-gradient(135deg, var(--premium-gold), #fff); -webkit-background-clip: text;">Premium AI Assistant</h2>
+                    </div>
+
+                    <!-- Chat History Sidebar (Simplified) -->
+                    <div id="aiHistorySidebar" style="margin-bottom: 15px; display: none;">
+                        <h4 style="color: var(--premium-gold); margin-bottom: 10px; font-size: 14px;"><i class="fas fa-history"></i> Previous Chats</h4>
+                        <div id="aiHistoryList" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px;"></div>
+                    </div>
+                    <button onclick="toggleAIHistory()" class="btn" style="background: rgba(255,255,255,0.05); font-size: 12px; padding: 5px; margin-bottom: 10px;">
+                        <i class="fas fa-list"></i> Toggle History
+                    </button>
+
+                    <div id="aiChatWindow" style="height: 400px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;">
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <div style="position: relative;">
+                                <button id="aiPlusBtn" class="btn" style="width: 40px; border-radius: 50%; padding: 0; height: 40px; margin: 0; background: var(--premium-gold);"><i class="fas fa-plus"></i></button>
+                                <div id="aiMenu" style="display: none; position: absolute; bottom: 50px; left: 0; background: var(--dark); border: 1px solid var(--premium-gold); border-radius: 10px; padding: 10px; z-index: 100; width: 200px;">
+                                    <p style="font-size: 12px; margin-bottom: 5px;">Select Model:</p>
+                                    <select id="aiModelSelect" style="width: 100%; margin-bottom: 10px; background: #333; color: #fff; border: 1px solid #555;">
+                                        <option value="gemini">Gemini 2.5 Flash</option>
+                                        <option value="groq">Groq (Llama 3)</option>
+                                    </select>
+                                    <label style="display: block; font-size: 12px; cursor: pointer; background: #444; padding: 5px; border-radius: 5px; text-align: center;">
+                                        <i class="fas fa-file-upload"></i> Upload PDF/Image
+                                        <input type="file" id="aiFileUpload" style="display: none;" onchange="handleAIFileUpload(this)">
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="text" id="aiInput" placeholder="Type your question here..." style="flex: 1; background: transparent; border: 1px solid var(--premium-gold);">
+                            <button onclick="sendAIChat()" class="btn" style="width: auto; margin-top: 0; background: var(--premium-gold);"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Islamic audio -->
+        <audio id="islamicAudio" preload="auto">
+            <source src="https://everyayah.com/Mohamed/Abdul_Basit_Murattal_64kbps/001001.mp3" type="audio/mpeg">
+            <source src="https://www.islamicfinder.org/audio/bismillah.ogg" type="audio/ogg">
+        </audio> -->
+    </div>
+
+    <script>
+        // API KEYS
+        const GEMINI_KEY = "AIzaSyAnZrcH0LCuAJqOmcX0G-AOUABze8wF50k";
+        const GROQ_KEY = "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";
+
+        // ========== PLATFORM CODE ==========
+        function initializePlatform() {
+            const examData = {
+                obligations: { 
+                    quiz1: { title: "امتحان 1", questions: [] } 
+                },
+                evidence: { 
+                    quiz1: { title: "Evidence Intro Quiz", questions: [] },
+                    quiz2: { title: "Evidence Subject Quiz", questions: [] },
+                    quiz3: { title: "Evidence Terms Quiz", questions: [] },
+                    quiz4: { title: "Evidence Comprehensive Quiz", questions: [] }
+                },
+                eu_law: { 
+                    quiz1: { title: "EU Law Quiz 1", questions: [] },
+                    quiz2: { title: "EU Law Quiz 2", questions: [] },
+                    quiz3: { title: "EU Law Quiz 3", questions: [] },
+                    quiz4: { title: "EU Law Quiz 4", questions: [] },
+                    quiz5: { title: "EU Law Comprehensive Quiz", questions: [] }
+                },
+                banking: { quiz1: { title: "امتحان 1 (قريباً)", questions: [] } },
+                political_science: { 
+                    quiz1: { title: "مدخل للعلوم السياسية - الامتحان الشامل", questions: [] }
+                },
+                research: { quiz1: { title: "امتحان 1 (قريباً)", questions: [] } },
+                admin_law: {
+                    quiz1: { title: "Administrative Law - Exam 1", questions: [] },
+                    quiz2: { title: "Administrative Law - Exam 2", questions: [] },
+                    quiz3: { title: "Administrative Law - Exam 3", questions: [] },
+                    quiz4: { title: "Exam 4 - Multiple Choice Only", questions: [] },
+                    quiz5: { title: "Exam 5 - True/False Only", questions: [] }
+                }
+            };
+
+            let currentUser = null;
+            let currentSubject = "obligations";
+            let currentQuiz = "quiz1";
+            let currentQuestionIndex = 0;
+            let userAnswers = {};
+            let quizResults = {};
+            let shuffledQuestions = {};
+            let timer;
+            let totalTimeLeft = 0;
+            let userName = "";
+            let timeUp = false;
+
+            // روابط بنك الأسئلة (يمكنك تغييرها لاحقاً)
+            const CIVIL_LAW_TEST_BANK_URL = "#";
+            const HUMANITARIAN_LAW_TEST_BANK_URL = "#";
+            const FAMILY_LAW_TEST_BANK_URL = "#";
+
+            const loginScreen = document.getElementById('loginScreen');
+            const subjectScreen = document.getElementById('subjectScreen');
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const statsScreen = document.getElementById('statsScreen');
+            const loginBtn = document.getElementById('loginBtn');
+            const usernameInput = document.getElementById('username');
+            const loginError = document.getElementById('loginError');
+            const userNameSubject = document.getElementById('userNameSubject');
+            const userNameWelcome = document.getElementById('userNameWelcome');
+            const selectedSubjectText = document.getElementById('selectedSubjectText');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const userNameSpan = document.getElementById('userName');
+            const quizTitle = document.getElementById('quizTitle');
+            const questionNumber = document.getElementById('questionNumber');
+            const progressBar = document.getElementById('progressBar');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const subjectSelector = document.getElementById('subjectSelector');
+            const welcomeQuizSelector = document.getElementById('welcomeQuizSelector');
+            const resultsSummary = document.getElementById('resultsSummary');
+            const quizContent = document.getElementById('quizContent');
+            const scoreText = document.getElementById('scoreText');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const correctAnswers = document.getElementById('correctAnswers');
+            const incorrectAnswers = document.getElementById('incorrectAnswers');
+            const reviewContainer = document.getElementById('reviewContainer');
+            const selectSubjectBtn = document.getElementById('selectSubjectBtn');
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            const backToQuizzesBtn = document.getElementById('backToQuizzesBtn');
+            const backToSubjectBtn = document.getElementById('backToSubjectBtn');
+            const timerContainer = document.getElementById('timerContainer');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const viewStatsBtn = document.getElementById('viewStatsBtn');
+            const viewStatsFromResultsBtn = document.getElementById('viewStatsFromResultsBtn');
+            const backToLoginBtn = document.getElementById('backToLoginBtn');
+            const backToLoginFromStatsBtn = document.getElementById('backToLoginFromStatsBtn');
+            const statsGrid = document.getElementById('statsGrid');
+            const historyList = document.getElementById('historyList');
+            const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+            const aiPlusBtn = document.getElementById('aiPlusBtn');
+            const aiMenu = document.getElementById('aiMenu');
+            const aiInput = document.getElementById('aiInput');
+            const clearStatsBtn = document.getElementById('clearStatsBtn');
+            const islamicAudio = document.getElementById('islamicAudio');
+
+            function playIslamicAudio() {
+                try {
+                    islamicAudio.currentTime = 0;
+                    islamicAudio.volume = 0.3;
+                    islamicAudio.play().catch(e => {
+                        console.log("Audio play failed:", e);
+                        if ('speechSynthesis' in window) {
+                            const msg = new SpeechSynthesisUtterance("بسم الله الرحمن الرحيم");
+                            msg.lang = 'ar-SA';
+                            msg.rate = 0.8;
+                            msg.volume = 0.3;
+                            window.speechSynthesis.speak(msg);
+                        }
+                    });
+                } catch (e) {
+                    console.log("Audio error:", e);
+                }
+            }
+
+            function loadAllQuestions() {
+                console.log("Loading all exam questions...");
+                
+                try {
+                    // --- Obligations Law Data ---
+                    const obligationsQuestions = [
+                    // True/False
+                    { text: "إذا كان محل الالتزام شيئاً معيناً بالنوع، تنتقل الملكية بمجرد إبرام العقد", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "يجوز للدائن في حالة امتناع المدين عن تسليم شيء معين بالنوع الحصول على شيء مماثل من السوق على نفقة المدين", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "الأصل أن التزام المحامي في الدفاع عن موكله يُعدّ التزاماً بتحقيق نتيجة", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "للمدين الحق في الامتناع عن التنفيذ العيني إذا كان فيه إرهاق له، بصرف النظر عن الضرر الذي يصيب الدائن", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "يتضمن الالتزام المدني عنصرين: عنصر المديونية وعنصر المسؤولية", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "إذا كان محل الالتزام نقل ملكية شيء معين بالذات، تنتقل الملكية فور إبرام العقد بقوة القانون، فيما عدا العقارات حيث تحتاج إلى تسجيل.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "يُعد المدين منفذاً للالتزام بتحقيق نتيجة إذا بذل العناية اللازمة ولو لم تتحقق النتيجة.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "يجوز للدائن في حالة الاستعجال الحصول على الشيء المعين بالنوع من السوق دون الحاجة إلى إذن القاضي", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "يجوز الاتفاق على تشديد معيار العناية المطلوبة في الالتزام ببذل عناية أو تخفيفها بموجب اتفاق بين الطرفين.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "الالتزام الطبيعي لا يُنفَّذ جبراً على المدين", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "التنفيذ العيني هو الأصل في تنفيذ الالتزامات، ولا يُلجأ إلى التعويض إلا استثناء.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "يجوز للمدين عرض التعويض بديلاً عن التنفيذ العيني متى كان التنفيذ ممكنا.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "الإعذار شرط لازم للمطالبة بالتعويض القضائي وفقاً للمادة 218 مدني.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "يحق للقاضي الحكم بالغرامة التهديدية من تلقاء نفسه دون طلب من الدائن.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "الغرامة التهديدية تعويض مقرر عن الضرر الفعلي الذي لحق الدائن.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "يجوز للقاضي زيادة مقدار الغرامة التهديدية إذا رأى أنها غير كافية لإكراه المدين على التنفيذ.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    { text: "يشترط لصحة الشرط الجزائي أن يكون مبلغه معادلاً للضرر الفعلي الذي يصيب الدائن.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 1 },
+                    { text: "تنتقل ملكية الشيء المعين بالذات بمجرد انعقاد العقد دون الحاجة إلى الإفراز.", type: "truefalse", options: ["صح", "خطأ"], correctAnswer: 0 },
+                    // MCQ
+                    { text: "يُعَرَّف بأن جميع أموال المدين ضامنة للوفاء بديونه:", type: "multiple", options: ["الحق في الحبس", "الضمان الخاص", "الضمان العام", "الإفلاس"], correctAnswer: 2 },
+                    { text: "تنتقل الملكية في العقار بـ ........", type: "multiple", options: ["التعاقد", "الإفراز", "التجنيب", "التسجيل"], correctAnswer: 3 },
+                    { text: "التعويض الذي يقدَّره القاضي يُسمى تعويضاً ........", type: "multiple", options: ["قضائياً", "تشريعياً", "قانونياً", "اتفاقياً"], correctAnswer: 0 },
+                    { text: "ما هو التنفيذ بمقابل؟", type: "multiple", options: ["تنفيذ التزام المدين بالطريقة المتفق عليها بين الطرفين", "منح الدائن تعويضاً مالياً بدلاً من التنفيذ العيني", "إجبار المدين على التنفيذ العيني مهما كانت الظروف", "عدم فرض أي عقوبات على المدين في حالة عدم التنفيذ"], correctAnswer: 1 },
+                    { text: "يُعتبر من قبيل الضمان الخاص الذي يتقرر لدائن معين على أموال محددة من أموال المدين:", type: "multiple", options: ["الدعوى غير المباشرة", "دعوى عدم نفاذ التصرفات", "دعوى الصورية", "الرهن"], correctAnswer: 3 },
+                    { text: "الأصل في تنفيذ الالتزام هو:", type: "multiple", options: ["التعويض النقدي", "التنفيذ العيني", "الغرامة التهديدية", "الإعفاء من التنفيذ"], correctAnswer: 1 },
+                    { text: "ينقضي الالتزام كلياً وتنتفي مسؤولية المدين إذا أثبت أن الوفاء أصبح مستحيلاً بسبب:", type: "multiple", options: ["إعساره المالي", "سبب أجنبي لا يد له فيه"], correctAnswer: 1 },
+                    { text: "الوسيلة التي يضعها القانون لضمان جدية مطالبة الدائن بالتعويض القضائي هي:", type: "multiple", options: ["التسجيل في السجلات العقارية", "إعذار المدين", "الحصول على إذن القاضي مسبقاً", "إعلان المدين بالإفلاس"], correctAnswer: 1 },
+                    { text: "يجوز إعذار المدين في القانون المدني عن طريق:", type: "multiple", options: ["الإنذار فقط", "الاتصال الهاتفي فقط", "الإنذار أو ما يقوم مقام الإنذار", "تقديم بلاغ للنيابة العامة"], correctAnswer: 2 },
+                    { text: "إذا لم يُنفِّذ المدين التزامه بتسليم شيء معين بالنوع، يجوز للدائن:", type: "multiple", options: ["الحصول على شيء مماثل بنفقة المدين بعد إذن القاضي أو في حالة الاستعجال بدونه", "المطالبة بفسخ العقد فقط", "الحبس التحفظي على المدين", "مصادرة أموال المدين مباشرة"], correctAnswer: 0 },
+                    { text: "أيٌّ من التالي يُعدّ شرطاً لصحة التنفيذ بمقابل (التعويض) بسبب عدم التنفيذ؟", type: "multiple", options: ["وجود خطأ، ضرر وعلاقة سببية بينهما", "إعسار المدين فقط", "وجود نص قانوني صريح بالتعويض", "تعدد الدائنين في الالتزام"], correctAnswer: 0 },
+                    { text: "الفائدة القانونية على الالتزامات النقدية مثال على التعويض:", type: "multiple", options: ["القضائي", "الاتفاقي", "القانوني", "التهديدي"], correctAnswer: 2 },
+                    { text: "أيٌّ من الأنواع التالية ليس من أنواع التعويض بحسب طريقة تقديره؟", type: "multiple", options: ["التعويض القضائي", "التعويض الاتفاقي", "التعويض القانوني", "التعويض الأدبي"], correctAnswer: 3 },
+                    { text: "أيٌّ من التالي مثال على التزام ببذل عناية؟", type: "multiple", options: ["التزام الناقل بإيصال البضاعة", "التزام المقاول ببناء المنزل", "التزام الطبيب بعلاج مريضه", "التزام البائع بنقل ملكية المبيع"], correctAnswer: 2 },
+                    { text: "القهر في تنفيذ الالتزام المدني جبراً يقع على", type: "multiple", options: ["شخص المدين بالحبس دائماً", "أموال المدين عن طريق السلطة العامة", "شخص المدين وأمواله معاً", "ضامني المدين فقط"], correctAnswer: 1 },
+                    { text: "تنتقل ملكية الشيء المعين بالنوع بـ", type: "multiple", options: ["مجرد انعقاد العقد", "التسجيل في السجلات الرسمية", "الإفراز (فصل الكمية المطلوبة)", "الحيازة المادية فقط"], correctAnswer: 2 },
+                    { text: "أيٌّ من التالي ُيمثّل الضمان العام للدائنين؟", type: "multiple", options: ["الرهن العقاري المحدد", "التأمين العيني على منقول", "جميع أموال المدين الحاضرة والمستقبلة", "كفالة الغير لتنفيذ الالتزام"], correctAnswer: 2 },
+                    { text: "ما الفرق الجوهري بين الالتزام الطبيعي والالتزام المدني؟", type: "multiple", options: ["الالتزام المدني أدبي والطبيعي قانوني", "الالتزام الطبيعي يفتقر لعنصر المسؤولية فلا يُنفَّذ جبراً", "الالتزام الطبيعي يُنفَّذ جبراً والمدني لا", "لا فرق بينهما في الأثر القانوني"], correctAnswer: 1 },
+                    { text: "معيار العناية المطلوب في الالتزام ببذل عناية هو عناية:", type: "multiple", options: ["الشخص المعتاد من أوساط الناس", "المختص والخبير دائماً", "أشد الناس حرصاً", "أقل الناس دراية"], correctAnswer: 0 },
+                    { text: "يتضمن الالتزام بنقل حق عيني:", type: "multiple", options: ["التسليم فقط دون الحفاظ على الشيء", "الحفاظ على الشيء وتسليمه", "الإفراز فقط", "التسجيل في المحكمة"], correctAnswer: 1 },
+                    { text: "إذا كان تنفيذ الالتزام لا يرتبط بشخص المدين، يجوز للدائن:", type: "multiple", options: ["حبس المدين جبراً", "الحصول على إذن القضاء بتنفيذه على نفقة المدين", "إلغاء الالتزام كلياً", "المطالبة بضعف التعويض"], correctAnswer: 1 },
+                    { text: "الإكراه البدني في تنفيذ الالتزامات يُطَبِّق استثنائياً في حالتين هما: ", type: "multiple", options: ["ديون القرض والإيجار", "ديون النفقة الشرعية والغرامات الجنائية", "الالتزامات التجارية والمدنية", "الالتزامات الدولية والضرائب"], correctAnswer: 1 },
+                    { text: "أيٌ من التالي يصف بدقة الالتزام الطبيعي؟", type: "multiple", options: ["له عنصرا المديونية والمسؤولية كاملان", "يحتوي على عنصر الواجب فقط دون المسؤولية القانونية", "يُنفَّذ جبراً مثل الالتزام المدني تماماً", "لا يصلح سبباً لأي التزام مدني"], correctAnswer: 1 },
+                    { text: "بعد الحكم بالغرامة التهديدية- يأخذ القاضي بعين الاعتبار عند تقدير التعويض النهائي-", type: "multiple", options: ["ما أصاب الدائن من خسارة وما فاته من كسب فقط", "ثروة المدين الشخصية فقط", "ما أصاب الدائن من خسارة وما فاته من كسب مع مراعاة العنت الصادر من المدين", "قيمة الالتزام الأصلي فقط دون اعتبار للضرر"], correctAnswer: 2 }
+                ];
+                examData.obligations.quiz1.questions = obligationsQuestions;
+                
+                // --- Evidence Law Data ---
+                const evidenceIntro = [
+                    { text: "Evidence is only concerned with proving facts that have legal effect in court.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Judicial evidence is the same as general evidence, as both can be presented in court.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The Free or Absolute System of Evidence allows individuals to prove their rights in any way they choose.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "In the Restricted System of Evidence, the judge has the right to independently gather evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The Mixed System of Evidence is a combination of the Free and Restricted systems.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The Egyptian legislature applies the Free System of Evidence in the Code of Evidence in Civil and Commercial Matters.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "According to the Free System of Evidence, the judge can assess evidence using their own knowledge of the case.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The Free or Absolute System of Evidence leads to a vast difference between judicial and factual truth in many cases.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The Restricted System of Evidence allows parties to prove their rights only through the methods specified by law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "According to the mixed system of evidence, the judge may abuse the absolute power granted to him in assessing evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Which of the following is a characteristic of the Free or Absolute System of Evidence?", type: "multiple", options: ["Judges cannot assess evidence.", "Only specific means of evidence can be used.", "The judge can use their own knowledge to assess evidence.", "It only applies to scientific evidence."], correctAnswer: 2 },
+                    { text: "In which system is the judge limited to assessing evidence only presented by the parties?", type: "multiple", options: ["The Free System.", "The Restricted System."], correctAnswer: 1 },
+                    { text: "What is the main function of evidence in court?", type: "multiple", options: ["To provide opinions.", "To provide proof of the existence of a legal fact.", "To confuse the parties.", "All of the above."], correctAnswer: 1 }
+                ];
+                const evidenceSubject = [
+                    { text: "The subject of evidence refers to facts that prove the existence of a right.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "A contract of sale can be used as evidence to prove a property right.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The law is considered part of evidence in legal proceedings.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "It is the judge's role to know the rules of law and apply them.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Local customs or habits can be used as exceptions in evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The foreign rule of law is not an exception in evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "What is the subject of evidence?", type: "multiple", options: ["Law.", "Legal Facts.", "The judge's opinion.", "The public order."], correctAnswer: 1 },
+                    { text: "Which of the following is considered an exception to the rule that law should not be a subject of evidence?", type: "multiple", options: ["Local customs or habits.", "The judge's personal opinions.", "The public order."], correctAnswer: 0 },
+                    { text: "Why is law not considered a subject of evidence?", type: "multiple", options: ["The judge is not obligated to follow the law.", "It is the judge's responsibility to know the rules of law.", "The law itself is evidence in all cases.", "All of the above."], correctAnswer: 1 }
+                ];
+                const evidenceTerms = [
+                    { text: "The plaintiff is only required to prove disputed facts.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The judge plays an important role in observing the production and effect of evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The fact that the plaintiff wants to prove as evidence should always be admissible in court.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Facts that contradict public order can be admissible as evidence.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The judge has the authority to decide whether a fact is related to the dispute.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Evidence can be produced even if it does not help in deciding the case.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Which of the following is a condition for evidence to be admissible in court?", type: "multiple", options: ["The facts should be impossible to prove.", "The facts must be admissible to prove.", "The facts must be irrelevant to the case.", "All of the above."], correctAnswer: 1 },
+                    { text: "Which type of facts is inadmissible as evidence?", type: "multiple", options: ["Facts related to contradicting public order.", "Facts that is disputed.", "Facts that support the plaintiff's claim.", "Facts that is directly relevant to the dispute."], correctAnswer: 0 },
+                    { text: "Who determines the relevancy of evidence in court?", type: "multiple", options: ["The plaintiff.", "The defendant.", "The judge.", "All of the above."], correctAnswer: 2 },
+                    { text: "What is the role of the judge in relation to evidence?", type: "multiple", options: ["To ignore the evidence presented.", "To determine its admissibility and relevance of evidence.", "To decide which party is wrong.", "All of the above."], correctAnswer: 1 }
+                ];
+                
+                examData.evidence.quiz1.questions = evidenceIntro;
+                examData.evidence.quiz2.questions = evidenceSubject;
+                examData.evidence.quiz3.questions = evidenceTerms;
+                examData.evidence.quiz4.questions = [...evidenceIntro, ...evidenceSubject, ...evidenceTerms];
+
+                // --- EU Law Data ---
+                const euQ1 = [
+                    { text: "The European Union is not supranational political and economic Union.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "EU includes 72 member states.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The total population of EU is over 700 million people.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The gross domestic product (GDP) of EU is about US $ 16.6 trillion in 2022.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "EU Policies aim to ensure the restricted movement of people, goods, Services and Capital within the internal market.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The European Union was established when Maastricht Treaty Came into force in 1993.", type: "multiple", options: ["Geneva", "Maastricht", "Lisbon", "none of the above"], correctAnswer: 1 },
+                    { text: "Maastricht Treaty was concluded in 1992.", type: "multiple", options: ["1948", "1986", "1992", "none of the above"], correctAnswer: 2 }
+                ];
+                const euQ2 = [
+                    { text: "The European Union is a pioneer in regional integration.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Regional Integration is a process in which non‑neighboring states enter into an agreement to improve Cooperation.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Supranational structure allows states to cede authority.", type: "multiple", options: ["Intergovernmental", "Supranational", "Combination", "None"], correctAnswer: 1 }
+                ];
+                const euQ3 = [
+                    { text: "Institutional framework of EU Comprises 7 institutions.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The European Parliament represents 450 million EU citizens.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Members of EU Parliament are elected for 5 years.", type: "multiple", options: ["4", "5", "6", "None"], correctAnswer: 1 }
+                ];
+                const euQ4 = [
+                    { text: "European Council brings together heads of state.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The European Commission is the independent executive arm.", type: "multiple", options: ["Military", "Economic", "Executive", "None"], correctAnswer: 2 }
+                ];
+
+                examData.eu_law.quiz1.questions = euQ1;
+                examData.eu_law.quiz2.questions = euQ2;
+                examData.eu_law.quiz3.questions = euQ3;
+                examData.eu_law.quiz4.questions = euQ4;
+                examData.eu_law.quiz5.questions = [...euQ1, ...euQ2, ...euQ3, ...euQ4];
+
+                // --- Political Science Data ---
+                const polSciQuestions = [
+                    { text: "Politics can happen in the workplace.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Aristo said: 'Man is by nature a political animal.'", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "An ideology is a set of ideas aimed at improving society.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Adam Smith argued for production-based prosperity.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Machiavelli used the term 'state' first.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Government and state are different.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Free competition is key to Classical Liberalism.", type: "multiple", options: ["Classical Liberalism", "Modern Liberalism", "Conservatism", "Socialism"], correctAnswer: 0 },
+                    { text: "Markets are self-correcting in Modern Conservatism.", type: "multiple", options: ["Classical Liberalism", "Modern Liberalism", "Conservatism", "Modern Conservatism"], correctAnswer: 3 },
+                    { text: "Who was the first to use the term 'state'?", type: "multiple", options: ["Plato", "Aristotle", "Niccolo Machiavelli", "John Locke"], correctAnswer: 2 },
+                    { text: "Elements of state include Population, Territory, Sovereignty, and Government.", type: "multiple", options: ["Culture", "Religion", "Government", "Police"], correctAnswer: 2 }
+                ];
+                examData.political_science.quiz1.questions = polSciQuestions;
+
+                // Administrative Law Data
+                const adminTF = [
+                    { text: "Administrative law is a result of the increasing socio-economic functions of the state and the expansion of government powers.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "There was no existence of administrative law before the 20th century.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The relationship between administrative authorities and individuals has become more complex in modern society.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "In ancient societies, the primary functions of the state included maintaining law and order, taxation, and protection from external threats.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The philosophy of 'Laissez-faire' promoted minimal government control and maximum free enterprise.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The 'Laissez-faire' doctrine led to social equality and improved working conditions for all.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The shift from a 'Laissez-faire' state to a 'Social Welfare State' contributed to the growth of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law is a branch of private law that regulates contracts between individuals.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "One of the objectives of administrative law is to prevent the misuse of administrative powers.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law ensures that citizens receive fair treatment from administrative authorities.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law originated as a distinct legal category in France.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The separation of powers principle plays no role in administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative law regulates the activities of public administration, including public utilities and administrative contracts.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Egypt was the first Middle Eastern country to introduce administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law provides mechanisms to challenge arbitrary actions and abuse of power.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The 2014 Egyptian Constitution distributes power between central and decentralized authorities.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative contracts in Egypt follow the same rules as private contracts.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Public law, including administrative law, governs the relationship between citizens and the state.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Judicial precedents play no role in shaping administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The growth of administrative law is linked to the increasing responsibilities of the state in modern society.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law is a codified set of rules like civil law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative law plays a crucial role in shaping society by influencing public policies.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative courts are often considered law-making courts because they develop legal doctrines through case law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The State Council is a rigid institution that does not adapt to societal changes.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The Conseil d'État in France played a major role in the development of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law governs the decision-making of government agencies, including rule-making and enforcement.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Taxation decisions are rarely challenged under administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "In civil law countries, administrative courts review decisions made by government agencies.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "One of the reasons for the growth of administrative law is the shift from a minimal state to a welfare state.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Urbanization had no impact on the expansion of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative authorities can create rules and regulations to address emergency situations quickly.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The judicial system alone is sufficient to resolve all administrative disputes efficiently.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The legislative process is sometimes inadequate, leading to the delegation of rule-making power to administrative authorities.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law allows for flexibility in regulations, enabling quick modifications when needed.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative tribunals must follow the same strict procedures as ordinary courts.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative law emphasizes preventive measures, such as licensing and inspection, rather than only punishing violations.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Judicial review ensures that administrative agencies act within their legal limits.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "A government action that exceeds its legal authority is considered ultra vires.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "If an administrative action is declared ultra vires, it remains legally valid.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative law governs the activities and operations of government agencies.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Unlike civil law, administrative law is a codified set of rules with a single legal code.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Court rulings are the only source of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The Egyptian Constitution serves as the supreme law of the land and provides the framework for the organization and functioning of the state.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "The Constitution establishes the powers and responsibilities of administrative bodies.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Constitutional law and administrative law are completely separate with no interaction.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Laws passed by Parliament and decrees issued by the President or the Council of Ministers regulate various aspects of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "International treaties and conventions have no impact on Egyptian administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Administrative decisions made by government agencies do not contribute to the development of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Judicial precedents from the State Council play a major role in shaping administrative law in Egypt.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative courts have the power to annul regulations that violate constitutional or legal provisions.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Customary law is never considered a valid source of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "General principles of law, such as fairness and equality, are recognized as sources of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative quasi-legislation, such as internal guidelines and directions, has no legal significance.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "Legal doctrine and scholarly writings contribute to the understanding and development of administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law remains static and does not change over time.", type: "truefalse", options: ["True", "False"], correctAnswer: 1 },
+                    { text: "The judiciary plays a crucial role in interpreting and shaping administrative law.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 },
+                    { text: "Administrative law is not codified, making it flexible and adaptable to changing circumstances.", type: "truefalse", options: ["True", "False"], correctAnswer: 0 }
+                ];
+
+                const adminMCQ = [
+                    { text: "What is the primary focus of administrative law?", type: "multiple", options: ["Regulating private contracts between individuals", "Governing the relationship between individuals and the state", "Defining criminal offenses and penalties", "Establishing international trade laws"], correctAnswer: 1 },
+                    { text: "Which country first introduced administrative law as a distinct legal category?", type: "multiple", options: ["United Kingdom", "United States", "France", "Germany"], correctAnswer: 2 },
+                    { text: "Which of the following best describes the concept of a 'Social Welfare State'?", type: "multiple", options: ["A state that promotes minimal government control", "A state that actively intervenes to promote social justice and economic welfare", "A state that focuses only on national defense and law enforcement", "A state that operates without any government regulations"], correctAnswer: 1 },
+                    { text: "What was a major drawback of the 'Laissez-faire' philosophy?", type: "multiple", options: ["It resulted in excessive government intervention", "It led to exploitation of weaker sections by stronger ones", "It completely eliminated economic inequality", "It encouraged strict administrative regulations"], correctAnswer: 1 },
+                    { text: "Which of the following is NOT a function of administrative law?", type: "multiple", options: ["Checking the misuse of administrative power", "Ensuring impartial resolution of disputes by officials", "Regulating individual contracts in the private sector", "Holding public officials accountable for their actions"], correctAnswer: 2 },
+                    { text: "Which legal principle does administrative law mainly uphold?", type: "multiple", options: ["Freedom of contract", "Separation of powers", "Criminal liability", "International arbitration"], correctAnswer: 1 },
+                    { text: "What is the role of administrative law in government operations?", type: "multiple", options: ["It prevents the government from regulating businesses", "It organizes and regulates administrative agencies", "It replaces constitutional law entirely", "It focuses only on taxation policies"], correctAnswer: 1 },
+                    { text: "Which of the following is an essential characteristic of administrative law?", type: "multiple", options: ["It primarily deals with criminal offenses", "It is concerned with public administration and government powers", "It applies only to private companies", "It does not involve any judicial oversight"], correctAnswer: 1 },
+                    { text: "Which of the following is a source of administrative law?", type: "multiple", options: ["Judicial precedents", "Personal opinions of government officials", "Informal agreements between political parties", "Customary tribal laws"], correctAnswer: 0 },
+                    { text: "In Egypt, the 2014 Constitution distributes power between which entities?", type: "multiple", options: ["The military and religious institutions", "Central and decentralized authorities", "The monarchy and the judiciary", "Private corporations and the government"], correctAnswer: 1 },
+                    { text: "Which of the following best defines administrative law?", type: "multiple", options: ["A codified set of legal rules governing private contracts", "The body of law that governs the activities of administrative agencies", "A branch of criminal law dealing with public offenses", "A system of unwritten customs and traditions"], correctAnswer: 1 },
+                    { text: "Why is administrative law often considered a 'law-making judiciary'?", type: "multiple", options: ["Because administrative courts create legal doctrines through case law", "Because it does not require interpretation by judges", "Because it replaces constitutional law", "Because it is a completely codified system"], correctAnswer: 0 },
+                    { text: "What is one key reason for the growth of administrative law?", type: "multiple", options: ["A shift from a laissez-faire state to a welfare state", "The reduction of government responsibilities", "The decline of industrialization", "The elimination of public policies"], correctAnswer: 0 },
+                    { text: "Which institution played a major role in shaping administrative law in France?", type: "multiple", options: ["The Supreme Court", "The European Union", "The Conseil d'Etat", "The Constitutional Court"], correctAnswer: 2 },
+                    { text: "Which of the following is a function of administrative law?", type: "multiple", options: ["Governing business contracts between private individuals", "Controlling and regulating public administration and agencies", "Creating international trade agreements", "Managing religious institutions"], correctAnswer: 1 },
+                    { text: "What is one of the major advantages of administrative law over traditional legislative processes?", type: "multiple", options: ["It is more rigid and difficult to change", "It does not require judicial oversight", "It allows for quick rule-making and adaptation to emergencies", "It replaces all judicial processes"], correctAnswer: 2 },
+                    { text: "What is the primary reason for the establishment of administrative tribunals?", type: "multiple", options: ["To replace the judicial system entirely", "To provide expertise and efficiency in resolving administrative disputes", "To enforce criminal law", "To increase bureaucracy without benefits"], correctAnswer: 1 },
+                    { text: "What happens when an administrative action exceeds its legal authority?", type: "multiple", options: ["It is considered ultra vires and may be declared void", "It automatically becomes law", "It is ignored by the courts", "It can be enforced without question"], correctAnswer: 0 },
+                    { text: "Which of the following is NOT a factor contributing to the growth of administrative law?", type: "multiple", options: ["Urbanization and industrialization", "Increased legislative efficiency", "The need for emergency regulations", "The inadequacy of traditional judicial processes"], correctAnswer: 1 },
+                    { text: "What is the purpose of judicial review in administrative law?", type: "multiple", options: ["To eliminate administrative agencies", "To ensure that government actions comply with the law", "To grant unlimited power to administrative bodies", "To prevent any government regulation"], correctAnswer: 1 },
+                    { text: "What is the primary focus of administrative law? (Repeated Question)", type: "multiple", options: ["Regulating private contracts", "Governing the activities of government agencies", "Establishing criminal penalties", "Managing international trade agreements"], correctAnswer: 1 },
+                    { text: "Which of the following is the supreme source of administrative law in Egypt?", type: "multiple", options: ["International treaties", "The Egyptian Constitution", "Customary law", "Ministerial decrees"], correctAnswer: 1 },
+                    { text: "Which of the following is NOT considered a source of administrative law?", type: "multiple", options: ["Judicial precedents", "Public opinion polls", "International treaties and conventions", "Subordinate legislation"], correctAnswer: 1 },
+                    { text: "Who has the authority to issue regulations necessary for law enforcement in Egypt?", type: "multiple", options: ["The Supreme Court", "The Prime Minister", "The House of Representatives", "The Central Bank"], correctAnswer: 1 },
+                    { text: "What role do judicial precedents play in administrative law?", type: "multiple", options: ["They provide interpretations and applications of legal principles in specific cases", "They replace all written laws and regulations", "They only apply to private sector disputes", "They do not influence administrative law"], correctAnswer: 0 },
+                    { text: "Which of the following is an example of subordinate legislation?", type: "multiple", options: ["A law passed by Parliament", "A ruling from the Supreme Constitutional Court", "An executive regulation issued by the Prime Minister", "An international treaty signed by the President"], correctAnswer: 2 },
+                    { text: "How do international treaties become part of Egyptian administrative law?", type: "multiple", options: ["They are automatically valid upon signing", "They require ratification and approval by the House of Representatives", "They must be issued as a presidential decree", "They do not have any legal effect"], correctAnswer: 1 },
+                    { text: "What is the function of administrative decisions in administrative law?", type: "multiple", options: ["They create constitutional amendments", "They establish detailed regulations and policies for government agencies", "They apply only to criminal cases", "They do not have any legal authority"], correctAnswer: 1 },
+                    { text: "Which of the following best defines administrative quasi-legislation?", type: "multiple", options: ["Guidelines and instructions issued by superior administrative authorities", "Constitaments", "Laws enacted by Parliament", "Regulations that apply only to the private sector"], correctAnswer: 0 },
+                    { text: "Why is administrative law considered an evolving field of law?", type: "multiple", options: ["It is based on a single, unchanging legal code", "It adapts to economic, social, and political changes in society", "It remains static over time", "It is unrelated to government operations"], correctAnswer: 1 }
+                ];
+
+                // Populate the 5 quizzes for admin_law
+                examData.admin_law.quiz1.questions = [...adminMCQ.slice(0, 10), ...adminTF.slice(0, 19)];
+                examData.admin_law.quiz2.questions = [...adminMCQ.slice(10, 20), ...adminTF.slice(19, 38)];
+                examData.admin_law.quiz3.questions = [...adminMCQ.slice(20, 30), ...adminTF.slice(38, 57)];
+                examData.admin_law.quiz4.questions = adminMCQ;
+                examData.admin_law.quiz5.questions = adminTF;
+
+                console.log("System initialized with new subjects. Questions loaded successfully.");
+                } catch (error) {
+                    console.error('Error loading questions:', error);
+                    showNotification('Error loading exam questions. Please refresh the page.', 'error');
+                }
+            }
+
+            function getStoredResults() {
+                try {
+                    const stored = localStorage.getItem('examResults');
+                    return stored ? JSON.parse(stored) : [];
+                } catch (error) {
+                    console.error('Error reading from localStorage:', error);
+                    return [];
+                }
+            }
+
+            function saveResult(subject, exam, score, totalQuestions) {
+                try {
+                    const results = getStoredResults();
+                    const result = {
+                        id: Date.now(),
+                        subject: subject,
+                        exam: exam,
+                        score: score,
+                        total: totalQuestions,
+                        percentage: Math.round((score / totalQuestions) * 100),
+                        date: new Date().toLocaleString()
+                    };
+                    results.push(result);
+                    localStorage.setItem('examResults', JSON.stringify(results));
+                    return result;
+                } catch (error) {
+                    console.error('Error saving result to localStorage:', error);
+                    showNotification('Could not save exam results', 'error');
+                    return null;
+                }
+            }
+
+            function calculateStatistics() {
+                const results = getStoredResults();
+                const stats = {
+                    totalExams: results.length,
+                    averageScore: 0,
+                    bestScore: 0,
+                    subjects: {},
+                    recentResults: results.slice(-10).reverse()
+                };
+                if (results.length > 0) {
+                    const totalScore = results.reduce((sum, r) => sum + r.percentage, 0);
+                    stats.averageScore = Math.round(totalScore / results.length);
+                    stats.bestScore = Math.max(...results.map(r => r.percentage));
+                    results.forEach(result => {
+                        if (!stats.subjects[result.subject]) {
+                            stats.subjects[result.subject] = { count: 0, totalScore: 0, bestScore: 0 };
+                        }
+                        stats.subjects[result.subject].count++;
+                        stats.subjects[result.subject].totalScore += result.percentage;
+                        stats.subjects[result.subject].bestScore = Math.max(stats.subjects[result.subject].bestScore, result.percentage);
+                    });
+                }
+                return stats;
+            }
+
+            function displayStatistics() {
+                const stats = calculateStatistics();
+                statsGrid.innerHTML = `
+                    <div class="stat-card" role="region" aria-label="Total exams taken">
+                        <div class="stat-value">${stats.totalExams}</div>
+                        <div class="stat-label">Total Exams</div>
+                    </div>
+                    <div class="stat-card" role="region" aria-label="Average score">
+                        <div class="stat-value">${stats.averageScore}%</div>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+                    <div class="stat-card" role="region" aria-label="Best score">
+                        <div class="stat-value">${stats.bestScore}%</div>
+                        <div class="stat-label">Best Score</div>
+                    </div>
+                    <div class="stat-card" role="region" aria-label="Number of subjects">
+                        <div class="stat-value">${Object.keys(stats.subjects).length}</div>
+                        <div class="stat-label">Subjects</div>
+                    </div>`;
+                
+                historyList.innerHTML = '';
+                if (stats.recentResults.length === 0) {
+                    historyList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No exams taken yet</p>';
+                } else {
+                    stats.recentResults.forEach(result => {
+                        const subjectNames = {
+                            obligations: "أحكام الالتزام",
+                            evidence: "قانون الإثبات",
+                            eu_law: "قانون الاتحاد الأوروبي",
+                            banking: "البنوك والنقود",
+                            political_science: "مدخل للعلوم السياسية",
+                            research: "مهارات البحث والتحليل",
+                            admin_law: "القانون الإداري"
+                        };
+                        const historyItem = document.createElement('div');
+                        historyItem.className = 'history-item';
+                        historyItem.setAttribute('role', 'listitem');
+                        
+                        const subjectDiv = document.createElement('div');
+                        const subjectNameEl = document.createElement('div');
+                        subjectNameEl.className = 'history-subject';
+                        subjectNameEl.textContent = `${subjectNames[result.subject] || result.subject} - ${result.exam}`;
+                        
+                        const dateEl = document.createElement('div');
+                        dateEl.className = 'history-date';
+                        dateEl.textContent = result.date;
+                        
+                        subjectDiv.appendChild(subjectNameEl);
+                        subjectDiv.appendChild(dateEl);
+                        
+                        const scoreDiv = document.createElement('div');
+                        scoreDiv.className = 'history-score';
+                        scoreDiv.style.color = result.percentage >= 70 ? '#27AE60' : result.percentage >= 50 ? '#F39C12' : '#E74C3C';
+                        scoreDiv.textContent = `${result.percentage}%`;
+                        scoreDiv.setAttribute('aria-label', `Score: ${result.percentage}%`);
+                        
+                        historyItem.appendChild(subjectDiv);
+                        historyItem.appendChild(scoreDiv);
+                        historyList.appendChild(historyItem);
+                    });
+                }
+            }
+
+            function showStats() {
+                document.querySelector('.screen.active').classList.remove('active');
+                statsScreen.classList.add('active');
+                displayStatistics();
+            }
+
+            function clearStatistics() {
+                if (confirm("Are you sure you want to clear all statistics? This action cannot be undone.")) {
+                    try {
+                        localStorage.removeItem('examResults');
+                        displayStatistics();
+                        showNotification("Statistics cleared successfully", "success");
+                    } catch (error) {
+                        console.error('Error clearing statistics:', error);
+                        showNotification('Could not clear statistics', 'error');
+                    }
+                }
+            }
+
+            // جعل دالة التنقل عالمية لتعمل مع onclick في HTML
+            window.showScreen = function(screenId) {
+                const screens = document.querySelectorAll('.screen');
+                screens.forEach(s => s.classList.remove('active'));
+                
+                const nextScreen = document.getElementById(screenId);
+                if (nextScreen) nextScreen.classList.add('active');
+                
+                // Handle login screen styling
+                const mainPlatform = document.getElementById('mainPlatform');
+                if (screenId === 'loginScreen') {
+                    mainPlatform.classList.add('on-login-screen');
+                } else {
+                    mainPlatform.classList.remove('on-login-screen');
+                }
+            };
+
+            function backToLogin() {
+                showScreen('loginScreen');
+            }
+
+            // جعل الدالة عالمية لضمان استجابة نموذج تسجيل الدخول
+            window.handleLogin = function() {
+                const username = usernameInput.value.trim();
+                
+                // تسجيل دخول الأدمن
+                if (username === "060319") {
+                    window.showScreen('adminScreen');
+                    if (typeof window.loadAdminPanel === 'function') window.loadAdminPanel();
+                    return;
+                }
+
+                // Validate username
+                if (username.length < 4) {
+                    loginError.textContent = 'Username must be at least 4 characters';
+                    loginError.style.display = 'block';
+                    return;
+                }
+                
+                // التحقق من الحسابات المميزة
+                const premiumUsers = JSON.parse(localStorage.getItem('premiumUsers') || '[]');
+                const isPremium = premiumUsers.includes(username);
+                
+                if (isPremium) {
+                    document.body.classList.add('premium-user');
+                    if(aiAssistantBtn) aiAssistantBtn.style.display = 'flex';
+                } else {
+                    document.body.classList.remove('premium-user');
+                    if(aiAssistantBtn) aiAssistantBtn.style.display = 'none';
+                }
+
+                // Sanitize username to prevent XSS
+                const sanitizedUsername = document.createElement('div');
+                sanitizedUsername.textContent = username;
+                const cleanUsername = sanitizedUsername.innerHTML;
+                
+                currentUser = { username: cleanUsername };
+
+                // حفظ المستخدم في قائمة "كل الحسابات" لكي يظهر للأدمن
+                let allPlatformUsers = JSON.parse(localStorage.getItem('allPlatformUsers') || '[]');
+                if (!allPlatformUsers.includes(cleanUsername)) {
+                    allPlatformUsers.push(cleanUsername);
+                    localStorage.setItem('allPlatformUsers', JSON.stringify(allPlatformUsers));
+                }
+
+                loginError.style.display = 'none';
+                userNameSubject.textContent = cleanUsername;
+                window.showScreen('subjectScreen');
+                initializeSubjectSelector();
+                playIslamicAudio();
+            };
+
+            function initializeSubjectSelector() {
+                const subjectBtns = subjectSelector.querySelectorAll('.subject-btn');
+                subjectBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        subjectBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        currentSubject = this.dataset.subject;
+                    });
+                });
+            }
+
+            function selectSubject() {
+                userNameWelcome.textContent = currentUser.username;
+                const subjectNames = {
+                    obligations: "أحكام الالتزام",
+                    evidence: "قانون الإثبات",
+                    eu_law: "قانون الاتحاد الأوروبي",
+                    banking: "البنوك والنقود",
+                    political_science: "مدخل للعلوم السياسية",
+                    research: "مهارات البحث والتحليل",
+                    admin_law: "القانون الإداري"
+                };
+                selectedSubjectText.textContent = `Select exam for ${subjectNames[currentSubject]}`;
+                playIslamicAudio();
+                initializeExamSelection();
+                showScreen('welcomeScreen');
+            }
+
+            function initializeExamSelection() {
+                const exams = examData[currentSubject] || {};
+                welcomeQuizSelector.innerHTML = '';
+                
+                const keys = Object.keys(exams);
+                if (keys.length === 0) {
+                    welcomeQuizSelector.innerHTML = '<div style="grid-column: 1/-1; padding: 20px; text-align: center; color: #7F8C8D;">No exams available for this subject yet.</div>';
+                    return;
+                }
+
+                keys.forEach((examKey, index) => {
+                    const exam = exams[examKey];
+                    const examBtn = document.createElement('div');
+                    examBtn.className = `subject-btn ${index === 0 ? 'active' : ''}`;
+                    examBtn.dataset.quiz = examKey;
+                    examBtn.innerHTML = `
+                        <div class="subject-icon"><i class="fas fa-file-alt"></i></div>
+                        <div>${exam.title}</div>
+                        <div style="font-size: 12px; color: var(--accent); margin-top: 5px;">${exam.questions.length} questions</div>`;
+                    examBtn.addEventListener('click', function() {
+                        welcomeQuizSelector.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        currentQuiz = this.dataset.quiz;
+                        startQuizBtn.innerHTML = '<i class="fas fa-play"></i> Start Selected Exam';
+                        startQuizBtn.className = 'btn';
+                    });
+                    welcomeQuizSelector.appendChild(examBtn);
+                });
+            }
+
+            function backToSubject() {
+                showScreen('subjectScreen');
+            }
+
+            function startQuiz() {
+                if (currentQuiz === 'testbank') {
+                    downloadTestBank();
+                    return;
+                }
+                
+                const questions = getCurrentQuestions();
+                if (!questions || questions.length === 0) {
+                    showNotification('This exam has no questions yet.', 'info');
+                    return;
+                }
+
+                userName = currentUser.username;
+                userNameSpan.textContent = userName;
+                timerContainer.style.display = 'block';
+                timeUp = false;
+                shuffleQuestions();
+                const finalQuestions = getCurrentQuestions();
+                totalTimeLeft = finalQuestions.length * 120;
+                startTotalTimer();
+                loadQuestion();
+                showScreen('quizScreen');
+            }
+
+            function downloadTestBank() {
+                let url, filename;
+                try {
+                    if (currentSubject === 'civil') {
+                        url = CIVIL_LAW_TEST_BANK_URL;
+                        filename = 'Civil-Law-Test-Bank.pdf';
+                    } else if (currentSubject === 'humanitarian') {
+                        url = HUMANITARIAN_LAW_TEST_BANK_URL;
+                        filename = 'Humanitarian-Law-Test-Bank.pdf';
+                    } else if (currentSubject === 'family') {
+                        url = FAMILY_LAW_TEST_BANK_URL;
+                        filename = 'Family-Law-Test-Bank.pdf';
+                    } else {
+                        showNotification('No Test Bank available for this subject.', 'error');
+                        return;
+                    }
+                    
+                    if (url === '#') {
+                        showNotification('Test Bank URL not configured. Please contact administrator.', 'error');
+                        return;
+                    }
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    showNotification('Test Bank download started!', 'success');
+                } catch (error) {
+                    console.error('Download error:', error);
+                    showNotification('Error downloading Test Bank. Please try again.', 'error');
+                }
+            }
+
+            function getCurrentQuestions() {
+                const exams = examData[currentSubject];
+                if (!exams) {
+                    console.error('Subject not found:', currentSubject);
+                    return [];
+                }
+                if (!exams[currentQuiz]) {
+                    console.error('Quiz not found:', currentQuiz);
+                    return [];
+                }
+                // Return shuffled questions if they exist, otherwise return original
+                const key = `${currentSubject}_${currentQuiz}`;
+                return shuffledQuestions[key] || exams[currentQuiz].questions || [];
+            }
+
+            function getCurrentExam() {
+                const exams = examData[currentSubject];
+                return exams[currentQuiz];
+            }
+
+            function shuffleQuestions() {
+                const exams = examData[currentSubject];
+                const originalQuestions = exams[currentQuiz].questions;
+                const key = `${currentSubject}_${currentQuiz}`;
+                shuffledQuestions[key] = [...originalQuestions];
+                for (let i = shuffledQuestions[key].length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffledQuestions[key][i], shuffledQuestions[key][j]] =
+                        [shuffledQuestions[key][j], shuffledQuestions[key][i]];
+                }
+                shuffledQuestions[key].forEach(question => {
+                    if (question.type === "multiple") {
+                        const originalOptions = [...question.options];
+                        const originalCorrectAnswer = question.correctAnswer;
+                        const correctAnswerText = originalOptions[originalCorrectAnswer];
+                        for (let i = originalOptions.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [originalOptions[i], originalOptions[j]] = [originalOptions[j], originalOptions[i]];
+                        }
+                        question.correctAnswer = originalOptions.indexOf(correctAnswerText);
+                        question.options = originalOptions;
+                    }
+                });
+                currentQuestionIndex = 0;
+                userAnswers = {};
+            }
+
+            function startTotalTimer() {
+                updateTotalTimerDisplay();
+                clearInterval(timer);
+                timer = setInterval(function() {
+                    if (timeUp) {
+                        clearInterval(timer);
+                        return;
+                    }
+                    totalTimeLeft--;
+                    updateTotalTimerDisplay();
+                    if (totalTimeLeft <= 0) {
+                        clearInterval(timer);
+                        timeUp = true;
+                        showTimeUpMessage();
+                        setTimeout(() => {
+                            calculateResults();
+                            showResults();
+                        }, 2000);
+                    }
+                }, 1000);
+            }
+
+            function updateTotalTimerDisplay() {
+                const minutes = Math.floor(totalTimeLeft / 60);
+                const seconds = totalTimeLeft % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (totalTimeLeft <= 60) {
+                    timerDisplay.style.color = '#E74C3C';
+                    timerContainer.classList.add('timer-warning');
+                } else if (totalTimeLeft <= 300) {
+                    timerDisplay.style.color = '#F39C12';
+                    timerContainer.classList.remove('timer-warning');
+                } else {
+                    timerDisplay.style.color = '#3498DB';
+                    timerContainer.classList.remove('timer-warning');
+                }
+            }
+
+            function showTimeUpMessage() {
+                const timeUpDiv = document.createElement('div');
+                timeUpDiv.className = 'time-up-message';
+                timeUpDiv.innerHTML = `<h2><i class="fas fa-hourglass-end"></i> Time's Up!</h2><p>The exam has been submitted automatically.</p><p>Evaluating your answers...</p>`;
+                document.body.appendChild(timeUpDiv);
+                setTimeout(() => { document.body.removeChild(timeUpDiv); }, 3000);
+            }
+
+            function loadQuestion() {
+                if (timeUp) return;
+                const exam = getCurrentExam();
+                const questions = getCurrentQuestions();
+                
+                if (!questions || !questions[currentQuestionIndex]) {
+                    showNotification('Error loading question', 'error');
+                    return;
+                }
+                
+                const question = questions[currentQuestionIndex];
+                quizTitle.textContent = escapeHtml(exam.title);
+                questionNumber.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+                progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+                
+                // التأكد من إظهار حاوية الأسئلة كـ Block والنتائج مختفية
+                quizContent.style.setProperty('display', 'block', 'important');
+                resultsSummary.style.display = 'none';
+                resultsSummary.style.setProperty('display', 'none', 'important');
+
+                const arabicRegex = /[\u0600-\u06FF]/;
+                if (arabicRegex.test(question.text)) {
+                    questionText.classList.add('arabic-text');
+                    questionText.style.textAlign = 'right';
+                    questionText.style.direction = 'rtl';
+                } else {
+                    questionText.classList.remove('arabic-text');
+                    questionText.style.textAlign = 'left';
+                    questionText.style.direction = 'ltr';
+                }
+                questionText.textContent = question.text;
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.setAttribute('role', 'button');
+                    optionElement.setAttribute('tabindex', '0');
+                    optionElement.setAttribute('aria-selected', userAnswers[currentQuestionIndex] === index ? 'true' : 'false');
+                    
+                    if (arabicRegex.test(option)) {
+                        optionElement.classList.add('arabic-text');
+                        optionElement.style.textAlign = 'right';
+                        optionElement.style.direction = 'rtl';
+                    } else {
+                        optionElement.classList.remove('arabic-text');
+                        optionElement.style.textAlign = 'left';
+                        optionElement.style.direction = 'ltr';
+                    }
+                    if (userAnswers[currentQuestionIndex] === index) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    
+                    optionElement.addEventListener('click', () => { selectOption(index); });
+                    optionElement.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            selectOption(index);
+                        }
+                    });
+                    
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                prevBtn.disabled = currentQuestionIndex === 0;
+                
+                // تحديث نص الزر مع الحفاظ على الأيقونة
+                if (currentQuestionIndex === questions.length - 1) {
+                    nextBtn.innerHTML = 'Finish Exam <i class="fas fa-check-circle"></i>';
+                } else {
+                    nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+                }
+            }
+
+            function selectOption(index) {
+                if (timeUp) return;
+                userAnswers[currentQuestionIndex] = index;
+                loadQuestion();
+            }
+
+            function goToPreviousQuestion() {
+                if (timeUp) return;
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    loadQuestion();
+                }
+            }
+
+            function goToNextQuestion() {
+                if (timeUp) return;
+                const questions = getCurrentQuestions();
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                } else {
+                    clearInterval(timer);
+                    calculateResults();
+                    showResults();
+                }
+            }
+
+            function calculateResults() {
+                const questions = getCurrentQuestions();
+                let correctCount = 0;
+                questions.forEach((question, index) => {
+                    if (userAnswers[index] === question.correctAnswer) {
+                        correctCount++;
+                    }
+                });
+                const percentage = Math.round((correctCount / questions.length) * 100);
+                quizResults[currentQuiz] = { correct: correctCount, total: questions.length, percentage: percentage };
+                const subjectNames = {
+                    obligations: "أحكام الالتزام",
+                    evidence: "قانون الإثبات",
+                    eu_law: "قانون الاتحاد الأوروبي",
+                    banking: "البنوك والنقود",
+                    political_science: "مدخل للعلوم السياسية",
+                    research: "مهارات البحث والتحليل",
+                    admin_law: "القانون الإداري"
+                };
+                saveResult(subjectNames[currentSubject] || currentSubject, getCurrentExam().title, correctCount, questions.length);
+            }
+
+            function showResults() {
+                const results = quizResults[currentQuiz];
+                const questions = getCurrentQuestions();
+                scoreDisplay.textContent = `${results.percentage}%`;
+                scoreText.textContent = `You answered ${results.correct} out of ${results.total} questions correctly`;
+                correctAnswers.textContent = `Correct Answers: ${results.correct}`;
+                incorrectAnswers.textContent = `Incorrect Answers: ${results.total - results.correct}`;
+                reviewContainer.innerHTML = '<h3 style="color: var(--secondary); margin-bottom: 15px;">Question Review</h3>';
+                
+                questions.forEach((question, index) => {
+                    const isCorrect = userAnswers[index] === question.correctAnswer;
+                    if (!isCorrect) {
+                        const reviewItem = document.createElement('div');
+                        reviewItem.className = `review-item incorrect`;
+                        const userAnswerIndex = userAnswers[index];
+                        const correctAnswerIndex = question.correctAnswer;
+                        const arabicRegex = /[\u0600-\u06FF]/;
+                        
+                        if (arabicRegex.test(question.text)) {
+                            reviewItem.classList.add('arabic-text');
+                            reviewItem.style.textAlign = 'right';
+                            reviewItem.style.direction = 'rtl';
+                        }
+                        
+                        const questionEl = document.createElement('div');
+                        questionEl.className = 'review-question';
+                        questionEl.innerHTML = `<strong>Q:</strong> ${escapeHtml(question.text)}`;
+                        
+                        const userAnswerEl = document.createElement('div');
+                        userAnswerEl.className = 'review-answer';
+                        userAnswerEl.innerHTML = `<strong>Your Answer:</strong> <span style="color: var(--incorrect);">${escapeHtml(userAnswerIndex !== undefined ? question.options[userAnswerIndex] : 'Not answered')}</span>`;
+                        
+                        const correctAnswerEl = document.createElement('div');
+                        correctAnswerEl.className = 'review-answer';
+                        correctAnswerEl.innerHTML = `<strong>Correct Answer:</strong> <span style="color: var(--success);">${escapeHtml(question.options[correctAnswerIndex])}</span>`;
+                        
+                        reviewItem.appendChild(questionEl);
+                        reviewItem.appendChild(userAnswerEl);
+                        reviewItem.appendChild(correctAnswerEl);
+                        reviewContainer.appendChild(reviewItem);
+                    }
+                });
+                
+                // إخفاء الأسئلة وإظهار النتائج باستخدام important لتخطي تضارب الـ CSS
+                quizContent.style.setProperty('display', 'none', 'important');
+                timerContainer.style.display = 'none';
+                resultsSummary.style.setProperty('display', 'block', 'important');
+                
+                let message = "";
+            }
+
+            // AI FUNCTIONS
+            aiPlusBtn.onclick = () => aiMenu.style.display = aiMenu.style.display === 'none' ? 'block' : 'none';
+            
+            let currentChatId = Date.now();
+            let currentChatMessages = []; // لتخزين سياق المحادثة الحالية
+
+            window.toggleAIHistory = function() {
+                const sidebar = document.getElementById('aiHistorySidebar');
+                sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+                renderAIHistory();
+            };
+
+            window.createNewChat = function() {
+                if (currentChatMessages.length > 0) {
+                    saveChatToHistory();
+                }
+                currentChatId = Date.now();
+                currentChatMessages = [];
+                document.getElementById('aiChatWindow').innerHTML = `<div class="ai-msg" style="background: var(--premium-accent); padding: 10px; border-radius: 10px; align-self: flex-start;">New session started. How can I help you?</div>`;
+                showNotification("New chat started", "success");
+            };
+
+            function saveChatToHistory() {
+                let history = JSON.parse(localStorage.getItem('ai_chat_history') || '{}');
+                // نأخذ أول 30 حرف من أول رسالة كعنوان
+                const firstMsg = currentChatMessages.find(m => m.role === 'user')?.content || "Empty Chat";
+                const title = firstMsg.substring(0, 30) + "...";
+                
+                history[currentChatId] = {
+                    title: title,
+                    messages: currentChatMessages,
+                    date: new Date().toLocaleString()
+                };
+                localStorage.setItem('ai_chat_history', JSON.stringify(history));
+            }
+
+            function renderAIHistory() {
+                const history = JSON.parse(localStorage.getItem('ai_chat_history') || '{}');
+                const list = document.getElementById('aiHistoryList');
+                list.innerHTML = '';
+                
+                Object.keys(history).reverse().forEach(id => {
+                    const chat = history[id];
+                    const item = document.createElement('div');
+                    item.style.cssText = "min-width: 150px; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 11px; border: 1px solid var(--premium-gold);";
+                    item.innerHTML = `<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${chat.title}</div><small style="opacity:0.5">${chat.date}</small>`;
+                    item.onclick = () => loadChatFromHistory(id);
+                    list.appendChild(item);
+                });
+            }
+
+            function loadChatFromHistory(id) {
+                const history = JSON.parse(localStorage.getItem('ai_chat_history') || '{}');
+                const chat = history[id];
+                if (!chat) return;
+                
+                currentChatId = id;
+                currentChatMessages = chat.messages;
+                const chatWin = document.getElementById('aiChatWindow');
+                chatWin.innerHTML = '';
+                currentChatMessages.forEach(msg => {
+                    const isAI = msg.role === 'model' || msg.role === 'assistant';
+                    const msgDiv = document.createElement('div');
+                    msgDiv.style.cssText = isAI 
+                        ? "background: var(--premium-accent); padding: 15px; border-radius: 10px; align-self: flex-start; max-width: 90%; line-height: 1.6; direction: rtl;"
+                        : "background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; align-self: flex-end; max-width: 80%; word-wrap: break-word;";
+                    msgDiv.innerHTML = isAI ? formatAIResponse(msg.content) : escapeHtml(msg.content);
+                    chatWin.appendChild(msgDiv);
+                });
+                chatWin.scrollTop = chatWin.scrollHeight;
+                showNotification("Chat loaded", "info");
+            }
+
+            // إتاحة الإرسال عبر زر Enter
+            document.getElementById('aiInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') sendAIChat();
+            });
+
+            // دالة لتنسيق رد الـ AI بشكل منظم
+            function formatAIResponse(text) {
+                if (!text) return "";
+                
+                // 1. تنظيف النص الأساسي من أي وسم HTML خبيث
+                let formatted = escapeHtml(text);
+                
+                // 2. تحويل الخط العريض **النص** إلى <strong>النص</strong>
+                formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
+                // 3. تحويل القوائم الرقمية (1. 2. 3.) لتبدأ في سطر جديد وتكون بارزة
+                formatted = formatted.replace(/(\d+\.\s)/g, '<br><strong style="color:var(--premium-gold)">$1</strong>');
+                
+                // 4. تحويل فواصل الأسطر إلى <br> للحفاظ على التنسيق
+                formatted = formatted.replace(/\n/g, '<br>');
+                
+                return formatted;
+            }
+
+            window.sendAIChat = async function() {
+                const inputField = document.getElementById('aiInput');
+                const text = inputField.value.trim();
+                if(!text) return;
+                
+                const chatWin = document.getElementById('aiChatWindow');
+                // إضافة رسالة المستخدم بأمان
+                const userMsg = document.createElement('div');
+                userMsg.style.cssText = "background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; align-self: flex-end; max-width: 80%; word-wrap: break-word;";
+                userMsg.textContent = text;
+                chatWin.appendChild(userMsg);
+                inputField.value = '';
+                
+                const model = document.getElementById('aiModelSelect').value;
+                const loadingMsg = document.createElement('div');
+                loadingMsg.style.cssText = "background: var(--premium-accent); padding: 15px; border-radius: 10px; align-self: flex-start; max-width: 90%; word-wrap: break-word; line-height: 1.6; direction: rtl;";
+                loadingMsg.textContent = "Thinking...";
+                chatWin.appendChild(loadingMsg);
+                chatWin.scrollTop = chatWin.scrollHeight;
+
+                try {
+                    let response;
+                    if (model === 'gemini') {
+                        // Gemini API تدعم إرسال التاريخ بالكامل للحفاظ على الذاكرة
+                        const historyPayload = currentChatMessages.map(m => ({
+                            role: m.role === 'user' ? 'user' : 'model',
+                            parts: [{ text: m.content }]
+                        }));
+
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`;
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                contents: [{
+                                    role: 'user', // Or 'model' if it's a response
+                                    parts: [{
+                                        text: text // The actual text content
+                                    }]
+                                }]
+                            })
+                        });
+
+                    } else {
+                        response = await fetch(apiUrl, {
+                           method: 'POST',
+                            mode: 'cors',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${GROQ_KEY}`
+                            },
+                            
+
+                            body: JSON.stringify({
+                                model: 'llama-3.3-70b-versatile',
+                                messages: [{role: "user", content: text}],
+                                stream: false
+                            })
+                        });
+                    }
+
+                    const apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || `API Error ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    const rawResponse = model === 'gemini' 
+                        ? data.candidates[0].content.parts[0].text 
+                        : data.choices[0].message.content;
+                    
+                    // إضافة رد الـ AI للذاكرة وحفظ الجلسة
+                    currentChatMessages.push({ role: "model", content: rawResponse });
+                    saveChatToHistory();
+
+                    // استخدام الدالة الجديدة لعرض النص المنسق
+                    loadingMsg.innerHTML = formatAIResponse(rawResponse);
+                } catch (err) {
+                    console.error("AI Assistant Error:", err);
+                    loadingMsg.style.background = "var(--danger)";
+                    loadingMsg.textContent = "Error: " + err.message;
+                }
+                chatWin.scrollTop = chatWin.scrollHeight;
+            };
+
+            window.handleAIFileUpload = function(input) {
+                if(input.files && input.files[0]) {
+                    showNotification("File uploaded: " + input.files[0].name + " (AI will analyze this text)", "success");
+                    aiMenu.style.display = 'none';
+                }
+            };
+
+            // ADMIN FUNCTIONS
+            window.loadAdminPanel = function() {
+                // جلب كل المستخدمين الذين سجلوا دخولهم مسبقاً
+                const allUsers = JSON.parse(localStorage.getItem('allPlatformUsers') || '[]');
+                // دمجهم مع المستخدمين الذين لديهم نتائج امتحانات (لضمان عدم فقدان أي اسم قديم)
+                const resultUsers = getStoredResults().map(r => r.username || "Unknown User");
+                const combinedUsers = [...new Set([...allUsers, ...resultUsers])];
+                
+                document.getElementById('allAccountsList').innerHTML = combinedUsers.map(u => 
+                    `<div class="history-item">${escapeHtml(u)}</div>`
+                ).join('');
+                
+                const subSelect = document.getElementById('editSubjectSelect');
+                subSelect.innerHTML = Object.keys(examData).map(k => `<option value="${k}">${k}</option>`).join('');
+                loadQuestionsForEdit();
+                loadPremiumUsersList();
+            };
+
+            window.loadPremiumUsersList = function() {
+                const premium = JSON.parse(localStorage.getItem('premiumUsers') || '[]');
+                const list = document.getElementById('premiumUsersList');
+                if (premium.length === 0) {
+                    list.innerHTML = '<p style="text-align: center; color: #999; padding: 10px;">No premium users yet.</p>';
+                    return;
+                }
+                list.innerHTML = premium.map(user => `
+                    <div class="history-item">
+                        <span><i class="fas fa-crown" style="color: var(--premium-gold);"></i> ${escapeHtml(user)}</span>
+                        <button onclick="removePremiumUser('${escapeHtml(user)}')" class="btn" style="width: auto; margin-top: 0; padding: 5px 10px; background: var(--danger); font-size: 12px;">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `).join('');
+            };
+
+            window.addPremiumUser = function() {
+                const user = document.getElementById('newPremiumUser').value.trim();
+                if(!user) return;
+                let premium = JSON.parse(localStorage.getItem('premiumUsers') || '[]');
+                if(!premium.includes(user)) {
+                    premium.push(user);
+                    localStorage.setItem('premiumUsers', JSON.stringify(premium));
+                    showNotification(`${user} is now Premium!`, 'success');
+                    document.getElementById('newPremiumUser').value = '';
+                    loadPremiumUsersList();
+                }
+            };
+
+            window.removePremiumUser = function(user) {
+                if(confirm(`Are you sure you want to remove ${user} from Premium?`)) {
+                    let premium = JSON.parse(localStorage.getItem('premiumUsers') || '[]');
+                    premium = premium.filter(u => u !== user);
+                    localStorage.setItem('premiumUsers', JSON.stringify(premium));
+                    loadPremiumUsersList();
+                    showNotification(`${user} removed from Premium`, 'info');
+                }
+            };
+
+            window.loadQuestionsForEdit = function() {
+                const sub = document.getElementById('editSubjectSelect').value;
+                const questions = examData[sub].quiz1.questions;
+                document.getElementById('questionsEditList').innerHTML = questions.map((q, i) => `
+                    <div class="review-item" style="margin-bottom:10px;">
+                        <input type="text" value="${q.text}" onchange="updateQuestionText('${sub}', ${i}, this.value)" style="width:100%; margin-bottom:5px;">
+                        <small>Type: ${q.type}</small>
+                    </div>
+                `).join('');
+            };
+
+            window.updateQuestionText = function(sub, index, val) {
+                examData[sub].quiz1.questions[index].text = val;
+                showNotification("Question updated in current session", "success");
+            };
+
+            aiAssistantBtn.onclick = () => showScreen('aiScreen');
+
+            function showResults() {
+                const results = quizResults[currentQuiz];
+                const questions = getCurrentQuestions();
+                if (results.percentage >= 90) message = "Excellent! Outstanding performance.";
+                else if (results.percentage >= 70) message = "Very good! Excellent performance.";
+                else if (results.percentage >= 50) message = "Pass! You can improve.";
+                else message = "Needs improvement. Try again.";
+                
+                setTimeout(() => { 
+                    alert(`Congratulations ${escapeHtml(userName)}!\n\n${message}\nYour score: ${results.percentage}%`); 
+                }, 500);
+            }
+
+            function backToQuizzes() {
+                showScreen('welcomeScreen');
+            }
+
+            function showNotification(message, type = 'info') {
+                const oldNotifications = document.querySelectorAll('.notification');
+                oldNotifications.forEach(n => n.remove());
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.setAttribute('role', 'alert');
+                notification.setAttribute('aria-live', 'polite');
+                notification.style.background = type === 'success' ? 'linear-gradient(135deg, #27AE60, #219653)' :
+                                              type === 'error' ? 'linear-gradient(135deg, #E74C3C, #C0392B)' :
+                                              'linear-gradient(135deg, var(--primary), var(--accent))';
+                
+                const iconClass = type === 'success' ? 'fa-check-circle' :
+                                 type === 'error' ? 'fa-exclamation-triangle' :
+                                 'fa-info-circle';
+                
+                const closeButton = document.createElement('button');
+                closeButton.className = 'notification-close';
+                closeButton.setAttribute('aria-label', 'Close notification');
+                closeButton.innerHTML = '<i class="fas fa-times"></i>';
+                closeButton.style.background = 'none';
+                closeButton.style.border = 'none';
+                closeButton.style.color = 'white';
+                closeButton.style.cursor = 'pointer';
+                closeButton.style.marginLeft = '10px';
+                closeButton.style.padding = '0 5px';
+                
+                notification.innerHTML = `
+                    <i class="fas ${iconClass}"></i>
+                    <div><strong>${escapeHtml(message)}</strong></div>`;
+                notification.appendChild(closeButton);
+                
+                closeButton.addEventListener('click', () => notification.remove());
+                document.body.appendChild(notification);
+                
+                setTimeout(() => { if (notification.parentElement) notification.remove(); }, 5000);
+            }
+            
+            function escapeHtml(text) {
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, m => map[m]);
+            }
+
+            function initializeApp() {
+                try {
+                  loadAllQuestions();
+                    loginBtn.onclick = window.handleLogin;
+                    selectSubjectBtn.addEventListener('click', selectSubject);
+                    startQuizBtn.addEventListener('click', startQuiz);
+                    backToQuizzesBtn.addEventListener('click', backToQuizzes);
+                    backToSubjectBtn.addEventListener('click', backToSubject);
+                    prevBtn.addEventListener('click', goToPreviousQuestion);
+                    nextBtn.addEventListener('click', goToNextQuestion);
+                    viewStatsBtn.addEventListener('click', showStats);
+                    viewStatsFromResultsBtn.addEventListener('click', showStats);
+                    backToLoginBtn.addEventListener('click', backToLogin);
+                    backToLoginFromStatsBtn.addEventListener('click', backToLogin);
+                    clearStatsBtn.addEventListener('click', clearStatistics);
+                    usernameInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') { e.preventDefault(); window.handleLogin(); }
+                    });
+                    
+                    // الانتظار لكي يسجل المستخدم دخوله
+                    console.log('App initialized. Waiting for user login...');
+                } catch (error) {
+                    console.error('Error initializing app:', error);
+                    showNotification('Failed to initialize application', 'error');
+                }
+            }
+
+            initializeApp();
+        }
+
+        // تشغيل المنصة مباشرة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                initializePlatform();
+            } catch (error) {
+                console.error('Platform initialization error:', error);
+                const loginErrorEl = document.getElementById('loginError');
+                if (loginErrorEl) {
+                    loginErrorEl.textContent = 'Failed to initialize platform. Please refresh the page.';
+                    loginErrorEl.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
