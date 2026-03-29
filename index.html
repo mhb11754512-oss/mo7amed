@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <style>
+        /* Styles for the quiz results */
+        body { font-family: Arial, sans-serif; }
+        .result { margin: 20px; }
+        .question { font-weight: bold; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Your Quiz Results</h1>
+    <div id="quizResults" class="result">
+        <!-- Quiz results will be displayed here -->
+    </div>
+    <script>
+        const quizResults = [
+            { question: 'What is the capital of France?', userAnswer: 'Berlin', correctAnswer: 'Paris', correct: false },
+            { question: 'What is 2 + 2?', userAnswer: '4', correctAnswer: '4', correct: true },
+            { question: 'What is the capital of Spain?', userAnswer: 'Madrid', correctAnswer: 'Madrid', correct: true },
+            { question: 'What is the capital of Italy?', userAnswer: 'Rome', correctAnswer: 'Rome', correct: true },
+            { question: 'What is the boiling point of water?', userAnswer: '90°C', correctAnswer: '100°C', correct: false }
+        ];
+
+        function displayResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            quizResults.forEach(result => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.textContent = `Question: ${result.question}`;
+
+                const answerDiv = document.createElement('div');
+                if (result.correct) {
+                    answerDiv.className = 'correct';
+                    answerDiv.textContent = `Your Answer: ${result.userAnswer} (Correct)`;
+                } else {
+                    answerDiv.className = 'incorrect';
+                    answerDiv.textContent = `Your Answer: ${result.userAnswer} (Incorrect)`;
+                    const correctDiv = document.createElement('div');
+                    correctDiv.textContent = `Correct Answer: ${result.correctAnswer}`;
+                    questionDiv.appendChild(correctDiv);
+                }
+                resultsDiv.appendChild(questionDiv);
+                resultsDiv.appendChild(answerDiv);
+            });
+        }
+
+        // Call the function to display results
+        displayResults();
+    </script>
+</body>
+</html>
