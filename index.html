@@ -5,52 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Results</title>
     <style>
-        /* Styles for the quiz results */
-        body { font-family: Arial, sans-serif; }
-        .result { margin: 20px; }
-        .question { font-weight: bold; }
-        .correct { color: green; }
-        .incorrect { color: red; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 1em;
+        }
+        .result {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .correct {
+            background-color: #c8e6c9;
+            color: #388e3c;
+        }
+        .incorrect {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
     </style>
 </head>
 <body>
-    <h1>Your Quiz Results</h1>
-    <div id="quizResults" class="result">
-        <!-- Quiz results will be displayed here -->
-    </div>
+    <h1>Quiz Results</h1>
+    <div id="results"></div>
     <script>
-        const quizResults = [
-            { question: 'What is the capital of France?', userAnswer: 'Berlin', correctAnswer: 'Paris', correct: false },
-            { question: 'What is 2 + 2?', userAnswer: '4', correctAnswer: '4', correct: true },
-            { question: 'What is the capital of Spain?', userAnswer: 'Madrid', correctAnswer: 'Madrid', correct: true },
-            { question: 'What is the capital of Italy?', userAnswer: 'Rome', correctAnswer: 'Rome', correct: true },
-            { question: 'What is the boiling point of water?', userAnswer: '90°C', correctAnswer: '100°C', correct: false }
-        ];
+        const userAnswers = ["B", "A", "D", "C"]; // User's answers
+        const correctAnswers = ["A", "B", "D", "C"]; // Correct answers
+        const resultsDiv = document.getElementById('results');
 
         function displayResults() {
-            const resultsDiv = document.getElementById('quizResults');
-            quizResults.forEach(result => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question';
-                questionDiv.textContent = `Question: ${result.question}`;
-
-                const answerDiv = document.createElement('div');
-                if (result.correct) {
-                    answerDiv.className = 'correct';
-                    answerDiv.textContent = `Your Answer: ${result.userAnswer} (Correct)`;
+            userAnswers.forEach((answer, index) => {
+                const result = document.createElement('div');
+                result.classList.add('result');
+                if (answer === correctAnswers[index]) {
+                    result.classList.add('correct');
+                    result.innerText = `Question ${index + 1}: Your answer ${answer} is correct!`;
                 } else {
-                    answerDiv.className = 'incorrect';
-                    answerDiv.textContent = `Your Answer: ${result.userAnswer} (Incorrect)`;
-                    const correctDiv = document.createElement('div');
-                    correctDiv.textContent = `Correct Answer: ${result.correctAnswer}`;
-                    questionDiv.appendChild(correctDiv);
+                    result.classList.add('incorrect');
+                    result.innerText = `Question ${index + 1}: Your answer ${answer} is incorrect! Correct answer was ${correctAnswers[index]}.`;
                 }
-                resultsDiv.appendChild(questionDiv);
-                resultsDiv.appendChild(answerDiv);
+                resultsDiv.appendChild(result);
             });
         }
 
-        // Call the function to display results
         displayResults();
     </script>
 </body>
